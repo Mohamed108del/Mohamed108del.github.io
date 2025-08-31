@@ -3,961 +3,1261 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة إدارة حضانة طيور الجنة</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome for icons -->
+    <title>نظام إدارة حضانة طيور الجنة</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Chart.js for statistics -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap');
-        
         :root {
-            --primary-color: #4f46e5;
-            --secondary-color: #10b981;
-            --accent-color: #f59e0b;
-            --dark-color: #1f2937;
-            --light-color: #f9fafb;
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --secondary: #7c3aed;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #3b82f6;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --sidebar-width: 280px;
+            --header-height: 80px;
         }
-        
-        body {
-            font-family: 'Tajawal', sans-serif;
-            background-color: #f8fafc;
-            direction: rtl;
-            text-align: right;
+
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
+
+        body {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .admin-system {
+            width: 100%;
+            max-width: 1400px;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+            display: flex;
+            min-height: 90vh;
+        }
+
+        /* الشريط الجانبي */
         .sidebar {
-            width: 260px;
-            background: linear-gradient(180deg, var(--primary-color) 0%, #3730a3 100%);
+            width: var(--sidebar-width);
+            background: linear-gradient(180deg, var(--dark) 0%, #2d2d42 100%);
             color: white;
+            padding: 30px 0;
             transition: all 0.3s ease;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-            position: fixed;
-            height: 100vh;
+            position: relative;
             z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 0 25px 25px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        .logo i {
+            font-size: 32px;
+            color: var(--primary);
+            margin-left: 10px;
+        }
+
+        .logo h1 {
+            font-size: 22px;
+            color: white;
+        }
+
+        .sidebar-header p {
+            color: #a0a0c0;
+            font-size: 14px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 5px;
+            padding: 0 15px;
+        }
+
+        .sidebar-menu a {
+            color: #d0d0e0;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background: linear-gradient(90deg, rgba(79, 70, 229, 0.2) 0%, transparent 100%);
+            color: white;
+        }
+
+        .sidebar-menu a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--primary);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar-menu a.active::before {
+            opacity: 1;
+        }
+
+        .sidebar-menu i {
+            margin-left: 15px;
+            font-size: 20px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .menu-badge {
+            background: var(--primary);
+            color: white;
+            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 20px;
+            margin-right: auto;
+        }
+
+        /* المحتوى الرئيسي */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #f1f5f9;
+        }
+
+        /* الهيدر */
+        .header {
+            height: var(--header-height);
+            background: white;
+            padding: 0 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 12px 20px;
+            width: 400px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .search-box input {
+            border: none;
+            background: transparent;
+            outline: none;
+            padding: 5px;
+            width: 100%;
+            color: var(--dark);
+            font-size: 15px;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+        }
+
+        .notifications {
+            position: relative;
+            margin-left: 20px;
+            cursor: pointer;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--danger);
+            color: white;
+            font-size: 10px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .user-info {
+            margin-left: 15px;
+        }
+
+        .user-info h4 {
+            font-size: 16px;
+            margin-bottom: 3px;
+            color: var(--dark);
+        }
+
+        .user-info p {
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+            box-shadow: 0 5px 15px rgba(79, 70, 229, 0.3);
+        }
+
+        /* محتوى الصفحة */
+        .page-content {
+            flex: 1;
+            padding: 30px;
             overflow-y: auto;
         }
-        
-        .sidebar.collapsed {
-            width: 80px;
-        }
-        
-        .sidebar-header {
-            padding: 1.5rem 1rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+        .page-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
+            margin-bottom: 30px;
         }
-        
-        .sidebar-menu {
-            padding: 1rem 0;
+
+        .page-title {
+            font-size: 28px;
+            color: var(--dark);
+            font-weight: 700;
         }
-        
-        .menu-item {
-            padding: 0.85rem 1.5rem;
-            margin: 0.25rem 0.5rem;
-            border-radius: 0.5rem;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
+
+        .page-title i {
+            color: var(--primary);
+            margin-left: 15px;
         }
-        
-        .menu-item:hover {
-            background-color: rgba(255, 255, 255, 0.1);
+
+        /* بطاقات الإحصائيات */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
         }
-        
-        .menu-item.active {
-            background-color: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        
-        .main-content {
-            margin-right: 260px;
-            transition: all 0.3s ease;
-            min-height: 100vh;
-        }
-        
-        .main-content.expanded {
-            margin-right: 80px;
-        }
-        
-        .navbar {
-            background-color: white;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            padding: 1rem 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 50;
-        }
-        
-        .content-container {
-            padding: 1.5rem;
-        }
-        
-        .card {
-            background-color: white;
-            border-radius: 0.75rem;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            transition: all 0.3s ease;
-        }
-        
-        .card:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            transform: translateY(-2px);
-        }
-        
+
         .stat-card {
-            background: linear-gradient(135deg, var(--primary-color) 0%, #6366f1 100%);
-            color: white;
-            border-radius: 0.75rem;
-            padding: 1.5rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
             transition: all 0.3s ease;
+            border-left: 5px solid var(--primary);
         }
-        
+
         .stat-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
         }
-        
-        .table-container {
-            background-color: white;
-            border-radius: 0.75rem;
+
+        .stat-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-left: 20px;
+            flex-shrink: 0;
+        }
+
+        .stat-content {
+            flex: 1;
+        }
+
+        .stat-content h3 {
+            font-size: 28px;
+            margin-bottom: 5px;
+            color: var(--dark);
+        }
+
+        .stat-content p {
+            color: #64748b;
+            font-size: 15px;
+        }
+
+        .stat-trend {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .trend-up {
+            color: var(--success);
+        }
+
+        .trend-down {
+            color: var(--danger);
+        }
+
+        /* الرسوم البيانية */
+        .charts-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .chart-card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        }
+
+        .chart-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 25px;
+        }
+
+        .chart-header h3 {
+            font-size: 18px;
+            color: var(--dark);
+        }
+
+        .chart-container {
+            height: 300px;
+            position: relative;
+        }
+
+        /* الجداول */
+        .card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
             overflow: hidden;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
-        
+
+        .card-header {
+            padding: 25px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-header h3 {
+            font-size: 20px;
+            color: var(--dark);
+        }
+
+        .card-body {
+            padding: 25px;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            border-radius: 12px;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
         }
-        
-        th {
-            background-color: #f1f5f9;
-            padding: 1rem;
-            font-weight: 600;
+
+        table th, table td {
+            padding: 18px 15px;
             text-align: right;
-            color: var(--dark-color);
+            border-bottom: 1px solid #e2e8f0;
         }
-        
-        td {
-            padding: 1rem;
-            border-top: 1px solid #e2e8f0;
+
+        table th {
+            background: #f8fafc;
+            color: #475569;
+            font-weight: 600;
         }
-        
-        tr:hover {
-            background-color: #f8fafc;
+
+        table tr:last-child td {
+            border-bottom: none;
         }
-        
-        .btn {
-            padding: 0.5rem 1rem;
-            border-radius: 0.375rem;
+
+        table tr:hover {
+            background: #f8fafc;
+        }
+
+        .status-badge {
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 13px;
             font-weight: 500;
-            transition: all 0.2s ease;
+        }
+
+        .status-active {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+        }
+
+        .status-pending {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--warning);
+        }
+
+        .status-inactive {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--danger);
+        }
+
+        /* الأزرار */
+        .btn {
+            padding: 12px 24px;
+            border-radius: 12px;
+            border: none;
+            font-weight: 600;
             cursor: pointer;
+            transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
-            border: none;
-            outline: none;
-        }
-        
-        .btn-primary {
-            background-color: var(--primary-color);
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            background-color: #4338ca;
-        }
-        
-        .btn-success {
-            background-color: var(--secondary-color);
-            color: white;
-        }
-        
-        .btn-success:hover {
-            background-color: #059669;
-        }
-        
-        .btn-danger {
-            background-color: #ef4444;
-            color: white;
-        }
-        
-        .btn-danger:hover {
-            background-color: #dc2626;
-        }
-        
-        .btn-warning {
-            background-color: var(--accent-color);
-            color: white;
-        }
-        
-        .btn-warning:hover {
-            background-color: #d97706;
-        }
-        
-        .badge {
-            padding: 0.25rem 0.5rem;
-            border-radius: 0.25rem;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-        
-        .badge-success {
-            background-color: #dcfce7;
-            color: #166534;
-        }
-        
-        .badge-warning {
-            background-color: #fef3c7;
-            color: #92400e;
-        }
-        
-        .badge-danger {
-            background-color: #fee2e2;
-            color: #991b1b;
-        }
-        
-        .badge-info {
-            background-color: #dbeafe;
-            color: #1e40af;
-        }
-        
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: var(--dark-color);
-        }
-        
-        input, select, textarea {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #d1d5db;
-            border-radius: 0.375rem;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-        
-        input:focus, select:focus, textarea:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
-        }
-        
-        .payment-method {
-            border: 2px solid #e5e7eb;
-            border-radius: 0.75rem;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        
-        .payment-method:hover {
-            border-color: var(--primary-color);
-            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.15);
-        }
-        
-        .payment-method.active {
-            border-color: var(--primary-color);
-            background-color: #f5f7ff;
-        }
-        
-        .qr-code {
-            width: 150px;
-            height: 150px;
-            background-color: #f3f4f6;
-            display: flex;
-            align-items: center;
             justify-content: center;
-            border-radius: 0.5rem;
-            margin: 0 auto;
+        }
+
+        .btn i {
+            margin-right: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.3);
+        }
+
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+
+        /* responsive */
+        @media (max-width: 1200px) {
+            .charts-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .admin-system {
+                flex-direction: column;
+                height: auto;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+                padding: 20px;
+            }
+            
+            .sidebar-menu {
+                display: flex;
+                overflow-x: auto;
+                padding: 10px 0;
+            }
+            
+            .sidebar-menu li {
+                margin-bottom: 0;
+                flex-shrink: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header {
+                flex-direction: column;
+                height: auto;
+                padding: 20px;
+            }
+            
+            .search-box {
+                width: 100%;
+                margin: 15px 0;
+            }
+            
+            .user-menu {
+                width: 100%;
+                justify-content: center;
+                margin-top: 15px;
+            }
+            
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .page-header .btn {
+                margin-top: 15px;
+            }
+        }
+
+        /* تأثيرات متقدمة */
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .shake {
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* تسجيل الدخول */
+        .login-container {
+            width: 100%;
+            max-width: 500px;
+            background: white;
+            border-radius: 20px;
             overflow: hidden;
-            border: 1px solid #e5e7eb;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
         }
-        
-        .payment-details {
-            background-color: #f9fafb;
-            border-radius: 0.5rem;
-            padding: 1rem;
-            margin-top: 1rem;
+
+        .login-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
         }
-        
+
+        .login-header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .login-header p {
+            opacity: 0.9;
+        }
+
+        .login-content {
+            padding: 30px;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 18px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.2);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.3);
+        }
+
+        .message {
+            padding: 18px;
+            margin-top: 25px;
+            border-radius: 12px;
+            text-align: center;
+            display: none;
+        }
+
+        .error {
+            background: #fee2e2;
+            color: var(--danger);
+            border: 1px solid #fecaca;
+        }
+
+        .success {
+            background: #d1fae5;
+            color: var(--success);
+            border: 1px solid #a7f3d0;
+        }
+
+        /* عناصر تفاعلية */
         .modal {
+            display: none;
             position: fixed;
-            top: 0;
+            z-index: 1000;
             left: 0;
+            top: 0;
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.5);
-            display: flex;
-            justify-content: center;
             align-items: center;
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
+            justify-content: center;
         }
-        
-        .modal.active {
-            opacity: 1;
-            visibility: visible;
-        }
-        
+
         .modal-content {
             background-color: white;
-            border-radius: 0.75rem;
+            border-radius: 16px;
+            padding: 30px;
             width: 90%;
-            max-width: 600px;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-            transform: translateY(-20px);
-            transition: all 0.3s ease;
+            max-width: 500px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
         }
-        
-        .modal.active .modal-content {
-            transform: translateY(0);
+
+        .close {
+            color: #aaa;
+            float: left;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
         }
-        
-        .modal-header {
-            padding: 1.5rem;
-            border-bottom: 1px solid #e5e7eb;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+
+        .close:hover {
+            color: var(--dark);
         }
-        
-        .modal-body {
-            padding: 1.5rem;
-        }
-        
-        .modal-footer {
-            padding: 1.5rem;
-            border-top: 1px solid #e5e7eb;
-            display: flex;
-            justify-content: flex-end;
-            gap: 0.75rem;
-        }
-        
-        .notification-dot {
+
+        .notification-dropdown {
+            display: none;
             position: absolute;
-            top: -5px;
-            right: -5px;
-            width: 18px;
-            height: 18px;
-            background-color: #ef4444;
-            color: white;
+            top: 50px;
+            left: 0;
+            background: white;
+            width: 350px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .notification-item {
+            padding: 15px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .notification-item:last-child {
+            border-bottom: none;
+        }
+
+        .notification-item p {
+            margin-bottom: 5px;
+        }
+
+        .notification-time {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        /* إدارة المستخدمين */
+        .user-management {
+            display: none;
+        }
+
+        .user-list {
+            margin-top: 20px;
+        }
+
+        .user-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .user-item:last-child {
+            border-bottom: none;
+        }
+
+        .user-avatar-sm {
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.7rem;
+            color: white;
             font-weight: bold;
+            margin-left: 15px;
         }
-        
-        @media (max-width: 768px) {
-            .sidebar {
-                width: 80px;
-            }
-            
-            .sidebar-header h2, .menu-item span {
-                display: none;
-            }
-            
-            .main-content {
-                margin-right: 80px;
-            }
-            
-            .menu-item {
-                display: flex;
-                justify-content: center;
-                padding: 1rem;
-            }
+
+        .user-details {
+            flex: 1;
         }
-        
-        /* Animation classes */
-        .fade-in {
-            animation: fadeIn 0.5s ease;
+
+        .user-details h4 {
+            margin-bottom: 5px;
         }
-        
-        .slide-in {
-            animation: slideIn 0.3s ease;
+
+        .user-details p {
+            color: #64748b;
+            font-size: 14px;
         }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        @keyframes slideIn {
-            from { transform: translateY(10px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        
-        /* Loading spinner */
-        .spinner {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid var(--primary-color);
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+
+        .user-actions {
+            display: flex;
+            gap: 10px;
         }
     </style>
 </head>
 <body>
-    <!-- Sidebar -->
-    <div class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <h2 class="text-xl font-bold flex items-center gap-2">
-                <i class="fas fa-dove"></i>
-                <span>طيور الجنة</span>
-            </h2>
-            <button id="sidebarToggle" class="text-white text-lg">
-                <i class="fas fa-bars"></i>
-            </button>
+    <!-- نظام الإدارة -->
+    <div class="admin-system" id="adminSystem">
+        <!-- الشريط الجانبي -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-dove"></i>
+                    <h1>طيور الجنة</h1>
+                </div>
+                <p>نظام إدارة الحضانة</p>
+            </div>
+            
+            <ul class="sidebar-menu">
+                <li><a href="#" class="active" onclick="showSection('dashboard')"><i class="fas fa-home"></i> الرئيسية</a></li>
+                <li><a href="#" onclick="showSection('children')"><i class="fas fa-child"></i> الأطفال</a></li>
+                <li><a href="#" onclick="showSection('parents')"><i class="fas fa-users"></i> أولياء الأمور</a></li>
+                <li><a href="#" onclick="showSection('payments')"><i class="fas fa-money-bill-wave"></i> المدفوعات <span class="menu-badge">3</span></a></li>
+                <li><a href="#" onclick="showSection('attendance')"><i class="fas fa-calendar-alt"></i> الحضور</a></li>
+                <li><a href="#" onclick="showSection('reports')"><i class="fas fa-chart-line"></i> التقارير</a></li>
+                <li><a href="#" onclick="showSection('users')"><i class="fas fa-user-cog"></i> إدارة المستخدمين</a></li>
+                <li><a href="#" onclick="showSection('settings')"><i class="fas fa-cog"></i> الإعدادات</a></li>
+                <li><a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</a></li>
+            </ul>
         </div>
         
-        <div class="sidebar-menu">
-            <div class="menu-item active" data-section="dashboard">
-                <i class="fas fa-home"></i>
-                <span>لوحة التحكم</span>
+        <!-- المحتوى الرئيسي -->
+        <div class="main-content">
+            <!-- الهيدر -->
+            <div class="header">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="ابحث في النظام ..." onkeyup="handleSearch()">
+                </div>
+                
+                <div class="user-menu">
+                    <div class="notifications" onclick="toggleNotifications()">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">3</span>
+                        <div class="notification-dropdown" id="notificationDropdown">
+                            <h4>الإشعارات</h4>
+                            <div class="notification-item">
+                                <p>تم تسجيل طفل جديد - يوسف أحمد</p>
+                                <span class="notification-time">منذ 10 دقائق</span>
+                            </div>
+                            <div class="notification-item">
+                                <p>دفع رسوم من ولي الأمر سعيد محمد</p>
+                                <span class="notification-time">منذ ساعة</span>
+                            </div>
+                            <div class="notification-item">
+                                <p>تذكير: اجتماع أولياء الأمور غداً</p>
+                                <span class="notification-time">منذ 3 ساعات</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="user-avatar pulse" onclick="toggleUserMenu()">AD</div>
+                    <div class="user-info">
+                        <h4>مدير النظام</h4>
+                        <p>مدير حضانة طيور الجنة</p>
+                    </div>
+                </div>
             </div>
-            <div class="menu-item" data-section="registrations">
-                <i class="fas fa-user-graduate"></i>
-                <span>التسجيلات</span>
-            </div>
-            <div class="menu-item" data-section="children">
-                <i class="fas fa-child"></i>
-                <span>الأطفال</span>
-            </div>
-            <div class="menu-item" data-section="parents">
-                <i class="fas fa-users"></i>
-                <span>أولياء الأمور</span>
-            </div>
-            <div class="menu-item" data-section="payments">
-                <i class="fas fa-credit-card"></i>
-                <span>المدفوعات</span>
-            </div>
-            <div class="menu-item" data-section="payment-methods">
-                <i class="fas fa-money-bill-wave"></i>
-                <span>طرق الدفع</span>
-            </div>
-            <div class="menu-item" data-section="reports">
-                <i class="fas fa-chart-bar"></i>
-                <span>التقارير</span>
-            </div>
-            <div class="menu-item" data-section="settings">
-                <i class="fas fa-cog"></i>
-                <span>الإعدادات</span>
-            </div>
-        </div>
-        
-        <div class="absolute bottom-0 w-full p-4 border-t border-gray-700">
-            <div class="menu-item" id="logoutBtn">
-                <i class="fas fa-sign-out-alt"></i>
-                <span>تسجيل الخروج</span>
+            
+            <!-- محتوى الصفحة -->
+            <div class="page-content">
+                <!-- قسم لوحة التحكم -->
+                <div id="dashboard-section">
+                    <div class="page-header">
+                        <h2 class="page-title"><i class="fas fa-home"></i> لوحة التحكم الرئيسية</h2>
+                        <button class="btn btn-primary" onclick="showAddChildModal()"><i class="fas fa-plus"></i> إضافة طفل جديد</button>
+                    </div>
+                    
+                    <!-- بطاقات الإحصائيات -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background: rgba(16, 185, 129, 0.15); color: var(--success);">
+                                <i class="fas fa-child"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 id="total-children">64</h3>
+                                <p>إجمالي الأطفال</p>
+                                <div class="stat-trend trend-up">
+                                    <i class="fas fa-arrow-up"></i>
+                                    <span>12% زيادة</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background: rgba(79, 70, 229, 0.15); color: var(--primary);">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 id="total-parents">58</h3>
+                                <p>أولياء الأمور</p>
+                                <div class="stat-trend trend-up">
+                                    <i class="fas fa-arrow-up"></i>
+                                    <span>8% زيادة</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background: rgba(245, 158, 11, 0.15); color: var(--warning);">
+                                <i class="fas fa-money-bill-wave"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 id="total-revenue">8,745</h3>
+                                <p>إجمالي الإيرادات (ريال)</p>
+                                <div class="stat-trend trend-up">
+                                    <i class="fas fa-arrow-up"></i>
+                                    <span>22% زيادة</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background: rgba(59, 130, 246, 0.15); color: var(--info);">
+                                <i class="fas fa-calendar-check"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 id="attendance-rate">92%</h3>
+                                <p>نسبة الحضور</p>
+                                <div class="stat-trend trend-up">
+                                    <i class="fas fa-arrow-up"></i>
+                                    <span>5% زيادة</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- الرسوم البيانية -->
+                    <div class="charts-container">
+                        <div class="chart-card">
+                            <div class="chart-header">
+                                <h3>الإيرادات الشهرية</h3>
+                                <select class="btn btn-sm" onchange="updateCharts()">
+                                    <option>2023</option>
+                                    <option>2022</option>
+                                </select>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="revenueChart"></canvas>
+                            </div>
+                        </div>
+                        
+                        <div class="chart-card">
+                            <div class="chart-header">
+                                <h3>توزيع الأطفال حسب الفئة العمرية</h3>
+                                <select class="btn btn-sm" onchange="updateCharts()">
+                                    <option>هذا العام</option>
+                                    <option>العام الماضي</option>
+                                </select>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="ageChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- جدول الأطفال -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>الأطفال المسجلين حديثاً</h3>
+                            <button class="btn btn-primary btn-sm" onclick="showAllChildren()">عرض الكل</button>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="children-table">
+                                    <thead>
+                                        <tr>
+                                            <th>الاسم</th>
+                                            <th>العمر</th>
+                                            <th>ولي الأمر</th>
+                                            <th>تاريخ التسجيل</th>
+                                            <th>الحالة</th>
+                                            <th>الإجراءات</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- سيتم ملؤه بواسطة JavaScript -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- جدول المدفوعات -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>آخر المدفوعات</h3>
+                            <button class="btn btn-primary btn-sm" onclick="showAllPayments()">عرض الكل</button>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="payments-table">
+                                    <thead>
+                                        <tr>
+                                            <th>رقم الدفع</th>
+                                            <th>العميل</th>
+                                            <th>التاريخ</th>
+                                            <th>المبلغ</th>
+                                            <th>الحالة</th>
+                                            <th>الإجراءات</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- سيتم ملؤه بواسطة JavaScript -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- قسم إدارة المستخدمين -->
+                <div id="users-section" class="user-management">
+                    <div class="page-header">
+                        <h2 class="page-title"><i class="fas fa-user-cog"></i> إدارة المستخدمين</h2>
+                        <button class="btn btn-primary" onclick="showAddUserModal()"><i class="fas fa-plus"></i> إضافة مستخدم جديد</button>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>المستخدمون المسجلون في النظام</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="user-list" id="user-list">
+                                <!-- سيتم ملؤه بواسطة JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- الأقسام الأخرى (سيتم تطويرها بشكل كامل لاحقاً) -->
+                <div id="children-section" class="user-management">
+                    <div class="page-header">
+                        <h2 class="page-title"><i class="fas fa-child"></i> إدارة الأطفال</h2>
+                        <button class="btn btn-primary" onclick="showAddChildModal()"><i class="fas fa-plus"></i> إضافة طفل جديد</button>
+                    </div>
+                    <p>هنا سيتم عرض وإدارة جميع الأطفال المسجلين في الحضانة.</p>
+                </div>
+                
+                <div id="parents-section" class="user-management">
+                    <div class="page-header">
+                        <h2 class="page-title"><i class="fas fa-users"></i> إدارة أولياء الأمور</h2>
+                    </div>
+                    <p>هنا سيتم عرض وإدارة جميع أولياء الأمور المسجلين في النظام.</p>
+                </div>
+                
+                <div id="payments-section" class="user-management">
+                    <div class="page-header">
+                        <h2 class="page-title"><i class="fas fa-money-bill-wave"></i> إدارة المدفوعات</h2>
+                    </div>
+                    <p>هنا سيتم عرض وإدارة جميع المدفوعات والفوترة.</p>
+                </div>
+                
+                <div id="attendance-section" class="user-management">
+                    <div class="page-header">
+                        <h2 class="page-title"><i class="fas fa-calendar-alt"></i> إدارة الحضور</h2>
+                    </div>
+                    <p>هنا سيتم تسجيل وإدارة حضور الأطفال.</p>
+                </div>
+                
+                <div id="reports-section" class="user-management">
+                    <div class="page-header">
+                        <h2 class="page-title"><i class="fas fa-chart-line"></i> التقارير والإحصائيات</h2>
+                    </div>
+                    <p>هنا سيتم عرض التقارير والإحصائيات المختلفة.</p>
+                </div>
+                
+                <div id="settings-section" class="user-management">
+                    <div class="page-header">
+                        <h2 class="page-title"><i class="fas fa-cog"></i> إعدادات النظام</h2>
+                    </div>
+                    <p>هنا سيتم عرض إعدادات النظام المختلفة.</p>
+                </div>
             </div>
         </div>
     </div>
-    
-    <!-- Main Content -->
-    <div class="main-content" id="mainContent">
-        <!-- Navbar -->
-        <div class="navbar">
-            <div class="flex items-center gap-4">
-                <h2 class="text-xl font-bold" id="pageTitle">لوحة التحكم</h2>
-            </div>
-            
-            <div class="flex items-center gap-4">
-                <div class="relative">
-                    <button class="text-gray-500 relative" id="notificationsBtn">
-                        <i class="fas fa-bell text-xl"></i>
-                        <span class="notification-dot">3</span>
-                    </button>
-                </div>
-                
-                <div class="flex items-center gap-2">
-                    <div class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold">
-                        م
-                    </div>
-                    <div>
-                        <div class="font-medium">مدير النظام</div>
-                        <div class="text-sm text-gray-500">Admin</div>
-                    </div>
-                </div>
-            </div>
+
+    <!-- نموذج الدخول -->
+    <div class="login-container" id="loginForm">
+        <div class="login-header">
+            <h1>نظام إدارة حضانة طيور الجنة</h1>
+            <p>يجب إدخال بيانات الدخول للوصول إلى النظام</p>
         </div>
         
-        <!-- Content Container -->
-        <div class="content-container">
-            <!-- Dashboard Section -->
-            <div class="content-section" id="dashboard">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-                    <div class="stat-card">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <div class="text-sm opacity-80">إجمالي الأطفال</div>
-                                <div class="text-2xl font-bold mt-2" id="totalChildren">0</div>
-                                <div class="text-sm mt-2 opacity-80"><i class="fas fa-arrow-up"></i> <span id="childrenGrowth">0%</span> منذ الشهر الماضي</div>
-                            </div>
-                            <div class="bg-white bg-opacity-20 p-3 rounded-full">
-                                <i class="fas fa-child text-xl"></i>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="stat-card" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <div class="text-sm opacity-80">التسجيلات الجديدة</div>
-                                <div class="text-2xl font-bold mt-2" id="newRegistrations">0</div>
-                                <div class="text-sm mt-2 opacity-80"><i class="fas fa-arrow-up"></i> <span id="registrationsGrowth">0%</span> منذ الأسبوع الماضي</div>
-                            </div>
-                            <div class="bg-white bg-opacity-20 p-3 rounded-full">
-                                <i class="fas fa-user-plus text-xl"></i>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="stat-card" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <div class="text-sm opacity-80">المدفوعات المنتظرة</div>
-                                <div class="text-2xl font-bold mt-2" id="pendingPayments">0</div>
-                                <div class="text-sm mt-2 opacity-80"><i class="fas fa-arrow-down"></i> <span id="paymentsChange">0%</span> منذ الأسبوع الماضي</div>
-                            </div>
-                            <div class="bg-white bg-opacity-20 p-3 rounded-full">
-                                <i class="fas fa-credit-card text-xl"></i>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="stat-card" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <div class="text-sm opacity-80">الشكاوى</div>
-                                <div class="text-2xl font-bold mt-2" id="totalComplaints">0</div>
-                                <div class="text-sm mt-2 opacity-80"><i class="fas fa-arrow-down"></i> <span id="complaintsChange">0%</span> منذ الأسبوع الماضي</div>
-                            </div>
-                            <div class="bg-white bg-opacity-20 p-3 rounded-full">
-                                <i class="fas fa-exclamation-circle text-xl"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-                    <div class="card">
-                        <h3 class="font-bold text-lg mb-4">التسجيلات خلال السنة</h3>
-                        <canvas id="registrationsChart" height="250"></canvas>
-                    </div>
-                    
-                    <div class="card">
-                        <h3 class="font-bold text-lg mb-4">توزيع الأطفال حسب الفئة العمرية</h3>
-                        <canvas id="ageDistributionChart" height="250"></canvas>
-                    </div>
-                </div>
-                
-                <div class="card">
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="font-bold text-lg">أحدث التسجيلات</h3>
-                        <button class="btn btn-primary" onclick="loadRegistrations()">
-                            <i class="fas fa-sync-alt"></i> تحديث البيانات
-                        </button>
-                    </div>
-                    
-                    <div class="table-container">
-                        <table id="registrationsTable">
-                            <thead>
-                                <tr>
-                                    <th>اسم الطفل</th>
-                                    <th>العمر</th>
-                                    <th>ولي الأمر</th>
-                                    <th>تاريخ التسجيل</th>
-                                    <th>الحالة</th>
-                                    <th>الإجراءات</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td colspan="6" class="text-center py-4">جارٍ تحميل البيانات...</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+        <div class="login-content">
+            <div class="input-group">
+                <label for="username">اسم المستخدم</label>
+                <input type="text" id="username" placeholder="أدخل اسم المستخدم">
             </div>
             
-            <!-- Payment Methods Section -->
-            <div class="content-section hidden" id="payment-methods">
-                <div class="card">
-                    <h2 class="text-xl font-bold mb-6">طرق الدفع المتاحة</h2>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- Vodafone Cash -->
-                        <div class="payment-method active" id="vodafoneMethod">
-                            <div class="flex items-center justify-between mb-4">
-                                <h3 class="font-bold text-lg text-red-600">
-                                    <i class="fas fa-mobile-alt"></i> فودافون كاش
-                                </h3>
-                                <span class="badge badge-success">مفعل</span>
-                            </div>
-                            
-                            <div class="qr-code mb-4">
-                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=01026672074" alt="Vodafone Cash QR Code">
-                            </div>
-                            
-                            <div class="text-center mb-4">
-                                <p class="font-medium">رقم فودافون كاش:</p>
-                                <p class="text-xl font-bold text-red-600">01026672074</p>
-                            </div>
-                            
-                            <div class="payment-details">
-                                <h4 class="font-bold mb-2">تعليمات الدفع:</h4>
-                                <ol class="list-decimal list-inside space-y-2 text-sm">
-                                    <li>افتح تطبيق فودافون كاش على هاتفك</li>
-                                    <li>اختر "إرسال أموال"</li>
-                                    <li>أدخل الرقم <span class="font-bold">01026672074</span></li>
-                                    <li>أدخل المبلغ المطلوب</li>
-                                    <li>أدخل كلمة السر الخاصة بك</li>
-                                    <li>احفظ screenshot للعملية وأرسله للإدارة</li>
-                                </ol>
-                            </div>
-                        </div>
-                        
-                        <!-- Fawry -->
-                        <div class="payment-method active" id="fawryMethod">
-                            <div class="flex items-center justify-between mb-4">
-                                <h3 class="font-bold text-lg text-orange-600">
-                                    <i class="fas fa-money-bill-wave"></i> فوري
-                                </h3>
-                                <span class="badge badge-success">مفعل</span>
-                            </div>
-                            
-                            <div class="qr-code mb-4">
-                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=01026672074" alt="Fawry QR Code">
-                            </div>
-                            
-                            <div class="text-center mb-4">
-                                <p class="font-medium">رقم فوري:</p>
-                                <p class="text-xl font-bold text-orange-600">01026672074</p>
-                            </div>
-                            
-                            <div class="payment-details">
-                                <h4 class="font-bold mb-2">تعليمات الدفع:</h4>
-                                <ol class="list-decimal list-inside space-y-2 text-sm">
-                                    <li>اذهب إلى أي نقطة دفع فوري قريبة منك</li>
-                                    <li>اختر "دفع فوري" من قائمة الخدمات</li>
-                                    <li>أدخل الرقم <span class="font-bold">01026672074</span></li>
-                                    <li>أدخل المبلغ المطلوب</li>
-                                    <li>احصل على إيصال الدفع</li>
-                                    <li>احفظ صورة للإيصال وأرسلها للإدارة</li>
-                                </ol>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="mt-8">
-                        <h3 class="font-bold text-lg mb-4">إضافة طريقة دفع جديدة</h3>
-                        
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="form-group">
-                                <label for="newMethodName">اسم طريقة الدفع</label>
-                                <input type="text" id="newMethodName" class="rounded-xl" placeholder="مثال: تحويل بنكي">
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="newMethodNumber">رقم الحساب/الهاتف</label>
-                                <input type="text" id="newMethodNumber" class="rounded-xl" placeholder="أدخل رقم الحساب أو الهاتف">
-                            </div>
-                            
-                            <div class="form-group md:col-span-2">
-                                <label for="newMethodInstructions">تعليمات الدفع</label>
-                                <textarea id="newMethodInstructions" rows="3" class="rounded-xl" placeholder="أدخل تعليمات الدفع لهذه الطريقة"></textarea>
-                            </div>
-                        </div>
-                        
-                        <button class="btn btn-primary mt-4">
-                            <i class="fas fa-plus"></i> إضافة طريقة دفع جديدة
-                        </button>
-                    </div>
-                </div>
+            <div class="input-group">
+                <label for="password">كلمة المرور</label>
+                <input type="password" id="password" placeholder="أدخل كلمة المرور">
             </div>
             
-            <!-- Other sections will be added here -->
+            <button class="login-btn" onclick="checkPassword()">تسجيل الدخول</button>
             
+            <div id="message" class="message error">
+                بيانات الدخول غير صحيحة
+            </div>
         </div>
     </div>
-    
-    <!-- Notifications Panel -->
-    <div class="hidden absolute top-16 right-4 w-80 bg-white rounded-lg shadow-xl z-50 border border-gray-200" id="notificationsPanel">
-        <div class="p-4 border-b border-gray-200">
-            <h3 class="font-bold">الإشعارات</h3>
+
+    <!-- Modal لإضافة طفل جديد -->
+    <div id="addChildModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('addChildModal')">&times;</span>
+            <h2 style="margin-bottom: 20px; color: var(--primary);">إضافة طفل جديد</h2>
+            <div class="input-group">
+                <label for="childName">اسم الطفل</label>
+                <input type="text" id="childName" placeholder="أدخل اسم الطفل">
+            </div>
+            <div class="input-group">
+                <label for="childAge">العمر</label>
+                <input type="number" id="childAge" placeholder="أدخل عمر الطفل">
+            </div>
+            <div class="input-group">
+                <label for="parentName">اسم ولي الأمر</label>
+                <input type="text" id="parentName" placeholder="أدخل اسم ولي الأمر">
+            </div>
+            <button class="login-btn" onclick="addNewChild()">إضافة الطفل</button>
         </div>
-        <div class="max-h-80 overflow-y-auto">
-            <div class="p-4 border-b border-gray-100 hover:bg-gray-50 cursor-pointer">
-                <div class="flex justify-between items-start">
-                    <div class="flex-1">
-                        <p class="font-medium">تسجيل جديد</p>
-                        <p class="text-sm text-gray-500">تم تسجيل طفل جديد: أحمد محمد</p>
-                        <p class="text-xs text-gray-400">منذ 5 دقائق</p>
-                    </div>
-                    <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">جديد</span>
-                </div>
+    </div>
+
+    <!-- Modal لإضافة مستخدم جديد -->
+    <div id="addUserModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('addUserModal')">&times;</span>
+            <h2 style="margin-bottom: 20px; color: var(--primary);">إضافة مستخدم جديد</h2>
+            <div class="input-group">
+                <label for="newUserName">اسم المستخدم</label>
+                <input type="text" id="newUserName" placeholder="أدخل اسم المستخدم">
             </div>
-            <div class="p-4 border-b border-gray-100 hover:bg-gray-50 cursor-pointer">
-                <div class="flex justify-between items-start">
-                    <div class="flex-1">
-                        <p class="font-medium">دفع جديد</p>
-                        <p class="text-sm text-gray-500">تم استلام دفعة بقيمة 1500 جنيه</p>
-                        <p class="text-xs text-gray-400">منذ ساعة</p>
-                    </div>
-                </div>
+            <div class="input-group">
+                <label for="newUserEmail">البريد الإلكتروني</label>
+                <input type="email" id="newUserEmail" placeholder="أدخل البريد الإلكتروني">
             </div>
-            <div class="p-4 border-b border-gray-100 hover:bg-gray-50 cursor-pointer">
-                <div class="flex justify-between items-start">
-                    <div class="flex-1">
-                        <p class="font-medium">رسالة جديدة</p>
-                        <p class="text-sm text-gray-500">لديك رسالة جديدة من ولي الأمر</p>
-                        <p class="text-xs text-gray-400">منذ 3 ساعات</p>
-                    </div>
-                    <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">جديد</span>
-                </div>
+            <div class="input-group">
+                <label for="newUserPassword">كلمة المرور</label>
+                <input type="password" id="newUserPassword" placeholder="أدخل كلمة المرور">
             </div>
-        </div>
-        <div class="p-4 border-t border-gray-200 text-center">
-            <button class="text-blue-500 text-sm font-medium">عرض جميع الإشعارات</button>
+            <div class="input-group">
+                <label for="userRole">الدور</label>
+                <select id="userRole" class="btn">
+                    <option value="admin">مدير</option>
+                    <option value="user">مستخدم عادي</option>
+                </select>
+            </div>
+            <button class="login-btn" onclick="addNewUser()">إضافة المستخدم</button>
         </div>
     </div>
 
     <script>
-        // بيانات التطبيق
-        let appData = {
-            children: [],
-            registrations: [],
-            parents: [],
-            payments: [],
-            paymentMethods: [
-                {
-                    id: 1,
-                    name: "فودافون كاش",
-                    number: "01026672074",
-                    instructions: [
-                        "افتح تطبيق فودافون كاش على هاتفك",
-                        "اختر 'إرسال أموال'",
-                        "أدخل الرقم 01026672074",
-                        "أدخل المبلغ المطلوب",
-                        "أدخل كلمة السر الخاصة بك",
-                        "احفظ screenshot للعملية وأرسله للإدارة"
-                    ],
-                    active: true,
-                    type: "vodafone"
-                },
-                {
-                    id: 2,
-                    name: "فوري",
-                    number: "01026672074",
-                    instructions: [
-                        "اذهب إلى أي نقطة دفع فوري قريبة منك",
-                        "اختر 'دفع فوري' من قائمة الخدمات",
-                        "أدخل الرقم 01026672074",
-                        "أدخل المبلغ المطلوب",
-                        "احصل على إيصال الدفع",
-                        "احفظ صورة للإيصال وأرسلها للإدارة"
-                    ],
-                    active: true,
-                    type: "fawry"
-                }
-            ]
-        };
+        // البيانات المخزنة محلياً
+        let childrenData = JSON.parse(localStorage.getItem('childrenData')) || [
+            {name: 'يوسف أحمد', age: '4 سنوات', parent: 'أحمد محمد', date: '15/05/2023', status: 'active'},
+            {name: 'سارة خالد', age: '5 سنوات', parent: 'خالد السماري', date: '14/05/2023', status: 'active'},
+            {name: 'فهد ناصر', age: '3 سنوات', parent: 'ناصر عبدالله', date: '12/05/2023', status: 'pending'},
+            {name: 'لينا علي', age: '4 سنوات', parent: 'علي محمد', date: '10/05/2023', status: 'active'}
+        ];
         
-        // تحميل البيانات من localStorage
-        function loadAppData() {
-            const savedData = localStorage.getItem('nurseryAppData');
-            if (savedData) {
-                appData = JSON.parse(savedData);
-            }
-            updateDashboard();
-            loadRegistrations();
-        }
+        let paymentsData = JSON.parse(localStorage.getItem('paymentsData')) || [
+            {id: '#PAY-1258', customer: 'أحمد محمد', date: '25/05/2023', amount: '1,200 ريال', status: 'active'},
+            {id: '#PAY-1257', customer: 'سعيد علي', date: '24/05/2023', amount: '1,200 ريال', status: 'active'},
+            {id: '#PAY-1256', customer: 'خالد السماري', date: '23/05/2023', amount: '1,200 ريال', status: 'pending'},
+            {id: '#PAY-1255', customer: 'فاطمة ناصر', date: '22/05/2023', amount: '1,200 ريال', status: 'active'}
+        ];
         
-        // حفظ البيانات إلى localStorage
-        function saveAppData() {
-            localStorage.setItem('nurseryAppData', JSON.stringify(appData));
-        }
+        let usersData = JSON.parse(localStorage.getItem('usersData')) || [
+            {name: 'مدير النظام', email: 'admin@example.com', role: 'admin', avatar: 'AD'},
+            {name: 'أحمد محمد', email: 'ahmed@example.com', role: 'user', avatar: 'أح'}
+        ];
         
-        // تحديث لوحة التحكم
-        function updateDashboard() {
-            document.getElementById('totalChildren').textContent = appData.children.length;
-            document.getElementById('newRegistrations').textContent = appData.registrations.length;
-            
-            // تحديث النمو المئوي (محاكاة)
-            document.getElementById('childrenGrowth').textContent = '12%';
-            document.getElementById('registrationsGrowth').textContent = '8%';
-            document.getElementById('paymentsChange').textContent = '5%';
-            document.getElementById('complaintsChange').textContent = '3%';
-            
-            // تحديث جدول أحدث التسجيلات
-            const registrationsTable = document.getElementById('registrationsTable').querySelector('tbody');
-            registrationsTable.innerHTML = '';
-            
-            if (appData.registrations.length === 0) {
-                registrationsTable.innerHTML = '<tr><td colspan="6" class="text-center py-4">لا توجد تسجيلات لعرضها</td></tr>';
-                return;
-            }
-            
-            // عرض آخر 5 تسجيلات فقط
-            const recentRegistrations = appData.registrations.slice(-5).reverse();
-            
-            recentRegistrations.forEach(reg => {
-                let badgeClass = 'badge-warning';
-                if (reg.status === 'مقبول') badgeClass = 'badge-success';
-                if (reg.status === 'مرفوض') badgeClass = 'badge-danger';
-                
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${reg.childName}</td>
-                    <td>${reg.childAge}</td>
-                    <td>${reg.parentName}</td>
-                    <td>${reg.registrationDate}</td>
-                    <td><span class="badge ${badgeClass}">${reg.status}</span></td>
-                    <td>
-                        <button class="btn btn-primary" onclick="viewRegistration(${reg.id})">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                    </td>
-                `;
-                registrationsTable.appendChild(row);
-            });
-        }
+        // الرقم السري MD5: e26be09ef854ed6680602acba47ff907
+        const PASSWORD_HASH = "e26be09ef854ed6680602acba47ff907";
+        let attemptCount = 0;
         
-        // تحميل التسجيلات
-        function loadRegistrations() {
-            // سيتم تنفيذ هذا في قسم التسجيلات
-        }
+        // عناصر DOM
+        const loginForm = document.getElementById('loginForm');
+        const adminSystem = document.getElementById('adminSystem');
+        const message = document.getElementById('message');
+        const passwordInput = document.getElementById('password');
+        const usernameInput = document.getElementById('username');
         
-        // عرض تفاصيل التسجيل
-        function viewRegistration(id) {
-            const registration = appData.registrations.find(reg => reg.id === id);
-            if (registration) {
-                alert(`تفاصيل التسجيل:\nالاسم: ${registration.childName}\nالعمر: ${registration.childAge}\nولي الأمر: ${registration.parentName}\nالهاتف: ${registration.parentPhone}\nالحالة: ${registration.status}`);
-            }
-        }
+        // إخفاء نظام الإدارة في البداية
+        adminSystem.style.display = 'none';
         
-        // Sidebar toggle functionality
-        document.getElementById('sidebarToggle').addEventListener('click', function() {
-            const sidebar = document.getElementById('sidebar');
-            const mainContent = document.getElementById('mainContent');
-            
-            sidebar.classList.toggle('collapsed');
-            mainContent.classList.toggle('expanded');
-        });
+        // الرسوم البيانية
+        let revenueChart, ageChart;
         
-        // Notifications toggle
-        document.getElementById('notificationsBtn').addEventListener('click', function(e) {
-            e.stopPropagation();
-            const panel = document.getElementById('notificationsPanel');
-            panel.classList.toggle('hidden');
-        });
-        
-        // Close notifications when clicking outside
-        document.addEventListener('click', function(e) {
-            const panel = document.getElementById('notificationsPanel');
-            const btn = document.getElementById('notificationsBtn');
-            
-            if (!panel.contains(e.target) && e.target !== btn && !btn.contains(e.target)) {
-                panel.classList.add('hidden');
-            }
-        });
-        
-        // Menu items functionality
-        const menuItems = document.querySelectorAll('.menu-item');
-        const contentSections = document.querySelectorAll('.content-section');
-        const pageTitle = document.getElementById('pageTitle');
-        
-        menuItems.forEach(item => {
-            item.addEventListener('click', function() {
-                if (this.id === 'logoutBtn') {
-                    // Logout functionality
-                    if (confirm('هل تريد تسجيل الخروج؟')) {
-                        window.location.href = 'index.html';
-                    }
-                    return;
-                }
-                
-                // Remove active class from all menu items
-                menuItems.forEach(mi => mi.classList.remove('active'));
-                
-                // Add active class to clicked menu item
-                this.classList.add('active');
-                
-                // Hide all content sections
-                contentSections.forEach(section => section.classList.add('hidden'));
-                
-                // Show the selected content section
-                const sectionId = this.getAttribute('data-section');
-                document.getElementById(sectionId).classList.remove('hidden');
-                
-                // Update page title
-                pageTitle.textContent = this.querySelector('span').textContent;
-            });
-        });
-        
-        // Charts initialization
+        // تهيئة الصفحة
         document.addEventListener('DOMContentLoaded', function() {
-            // تحميل البيانات عند بدء التحميل
-            loadAppData();
+            updateChildrenTable();
+            updatePaymentsTable();
+            updateUsersList();
+            updateStats();
+        });
+        
+        // التحقق من كلمة المرور
+        function checkPassword() {
+            const inputPassword = passwordInput.value;
+            const inputUsername = usernameInput.value;
             
-            // Registrations chart
-            const regCtx = document.getElementById('registrationsChart').getContext('2d');
-            const registrationsChart = new Chart(regCtx, {
-                type: 'line',
+            // التحقق من اسم المستخدم وكلمة المرور
+            if ((inputPassword === PASSWORD_HASH || md5(inputPassword) === PASSWORD_HASH) && inputUsername !== '') {
+                loginForm.style.display = 'none';
+                adminSystem.style.display = 'flex';
+                attemptCount = 0;
+                initializeCharts();
+            } else {
+                attemptCount++;
+                message.style.display = 'block';
+                
+                if (attemptCount >= 3) {
+                    message.textContent = 'لقد تجاوزت عدد المحاولات المسموح بها. سيتم إغلاق النظام.';
+                    setTimeout(() => {
+                        loginForm.style.display = 'none';
+                    }, 2000);
+                } else {
+                    message.textContent = `بيانات الدخول غير صحيحة. المحاولة ${attemptCount} من 3`;
+                }
+            }
+        }
+        
+        // تسجيل الخروج
+        function logout() {
+            loginForm.style.display = 'block';
+            adminSystem.style.display = 'none';
+            passwordInput.value = '';
+            usernameInput.value = '';
+            message.style.display = 'none';
+            attemptCount = 0;
+        }
+        
+        // دالة MD5 مبسطة (لأغراض العرض فقط)
+        function md5(input) {
+            return input === PASSWORD_HASH ? PASSWORD_HASH : "invalid";
+        }
+        
+        // السماح بالدخول باستخدام زر Enter
+        passwordInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+        
+        usernameInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+        
+        // إخفاء رسالة الخطأ عند البدء في الكتابة
+        passwordInput.addEventListener('input', function() {
+            message.style.display = 'none';
+        });
+        
+        usernameInput.addEventListener('input', function() {
+            message.style.display = 'none';
+        });
+        
+        // تهيئة الرسوم البيانية
+        function initializeCharts() {
+            // رسم بياني للإيرادات
+            const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+            revenueChart = new Chart(revenueCtx, {
+                type: 'bar',
                 data: {
                     labels: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'],
                     datasets: [{
-                        label: 'التسجيلات الشهرية',
-                        data: [12, 19, 8, 15, 10, 13, 18, 14, 16, 22, 17, 20],
-                        backgroundColor: 'rgba(79, 70, 229, 0.1)',
-                        borderColor: '#4f46e5',
-                        borderWidth: 2,
-                        tension: 0.3,
-                        fill: true
+                        label: 'الإيرادات بالريال',
+                        data: [6500, 5900, 7200, 8100, 7800, 8500, 8700, 9200, 8800, 9500, 10100, 10800],
+                        backgroundColor: 'rgba(79, 70, 229, 0.7)',
+                        borderColor: 'rgba(79, 70, 229, 1)',
+                        borderWidth: 1
                     }]
                 },
                 options: {
                     responsive: true,
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    },
+                    maintainAspectRatio: false,
                     scales: {
                         y: {
                             beginAtZero: true
@@ -966,25 +1266,32 @@
                 }
             });
             
-            // Age distribution chart
-            const ageCtx = document.getElementById('ageDistributionChart').getContext('2d');
-            const ageDistributionChart = new Chart(ageCtx, {
+            // رسم بياني دائري للأعمار
+            const ageCtx = document.getElementById('ageChart').getContext('2d');
+            ageChart = new Chart(ageCtx, {
                 type: 'doughnut',
                 data: {
                     labels: ['3 سنوات', '4 سنوات', '5 سنوات', '6 سنوات'],
                     datasets: [{
-                        data: [35, 25, 20, 20],
+                        data: [15, 25, 18, 6],
                         backgroundColor: [
-                            '#4f46e5',
-                            '#10b981',
-                            '#f59e0b',
-                            '#ef4444'
+                            'rgba(79, 70, 229, 0.7)',
+                            'rgba(16, 185, 129, 0.7)',
+                            'rgba(245, 158, 11, 0.7)',
+                            'rgba(239, 68, 68, 0.7)'
                         ],
-                        borderWidth: 0
+                        borderColor: [
+                            'rgba(79, 70, 229, 1)',
+                            'rgba(16, 185, 129, 1)',
+                            'rgba(245, 158, 11, 1)',
+                            'rgba(239, 68, 68, 1)'
+                        ],
+                        borderWidth: 1
                     }]
                 },
                 options: {
                     responsive: true,
+                    maintainAspectRatio: false,
                     plugins: {
                         legend: {
                             position: 'bottom'
@@ -992,15 +1299,247 @@
                     }
                 }
             });
-        });
+        }
+        
+        // تحديث الرسوم البيانية
+        function updateCharts() {
+            // في تطبيق حقيقي، سيتم جلب البيانات الجديدة من الخادم
+            // هنا سنقوم فقط بتحديث عشوائي للبيانات لأغراض العرض
+            const newRevenueData = Array.from({length: 12}, () => Math.floor(Math.random() * 5000) + 5000);
+            revenueChart.data.datasets[0].data = newRevenueData;
+            revenueChart.update();
+            
+            const newAgeData = Array.from({length: 4}, () => Math.floor(Math.random() * 20) + 5);
+            ageChart.data.datasets[0].data = newAgeData;
+            ageChart.update();
+        }
+        
+        // عرض/إخفاء الإشعارات
+        function toggleNotifications() {
+            const dropdown = document.getElementById('notificationDropdown');
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        }
+        
+        // إغلاق القوائم المنسدلة عند النقر خارجها
+        window.onclick = function(event) {
+            if (!event.target.matches('.notifications')) {
+                document.getElementById('notificationDropdown').style.display = 'none';
+            }
+        }
+        
+        // عرض Modal إضافة طفل جديد
+        function showAddChildModal() {
+            document.getElementById('addChildModal').style.display = 'flex';
+        }
+        
+        // عرض Modal إضافة مستخدم جديد
+        function showAddUserModal() {
+            document.getElementById('addUserModal').style.display = 'flex';
+        }
+        
+        // إغلاق Modal
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+        
+        // إضافة طفل جديد
+        function addNewChild() {
+            const childName = document.getElementById('childName').value;
+            const childAge = document.getElementById('childAge').value;
+            const parentName = document.getElementById('parentName').value;
+            
+            if (childName && childAge && parentName) {
+                const newChild = {
+                    name: childName,
+                    age: childAge + ' سنوات',
+                    parent: parentName,
+                    date: new Date().toLocaleDateString('ar-EG'),
+                    status: 'active'
+                };
+                
+                childrenData.unshift(newChild);
+                localStorage.setItem('childrenData', JSON.stringify(childrenData));
+                
+                updateChildrenTable();
+                updateStats();
+                
+                alert(`تم إضافة الطفل ${childName} بنجاح!`);
+                closeModal('addChildModal');
+                
+                // مسح الحقول
+                document.getElementById('childName').value = '';
+                document.getElementById('childAge').value = '';
+                document.getElementById('parentName').value = '';
+            } else {
+                alert('يرجى ملء جميع الحقول');
+            }
+        }
+        
+        // إضافة مستخدم جديد
+        function addNewUser() {
+            const userName = document.getElementById('newUserName').value;
+            const userEmail = document.getElementById('newUserEmail').value;
+            const userPassword = document.getElementById('newUserPassword').value;
+            const userRole = document.getElementById('userRole').value;
+            
+            if (userName && userEmail && userPassword) {
+                const newUser = {
+                    name: userName,
+                    email: userEmail,
+                    role: userRole,
+                    avatar: userName.charAt(0)
+                };
+                
+                usersData.push(newUser);
+                localStorage.setItem('usersData', JSON.stringify(usersData));
+                
+                updateUsersList();
+                
+                alert(`تم إضافة المستخدم ${userName} بنجاح!`);
+                closeModal('addUserModal');
+                
+                // مسح الحقول
+                document.getElementById('newUserName').value = '';
+                document.getElementById('newUserEmail').value = '';
+                document.getElementById('newUserPassword').value = '';
+            } else {
+                alert('يرجى ملء جميع الحقول');
+            }
+        }
+        
+        // تحديث جدول الأطفال
+        function updateChildrenTable() {
+            const tableBody = document.querySelector('#children-table tbody');
+            tableBody.innerHTML = '';
+            
+            childrenData.slice(0, 4).forEach(child => {
+                const row = document.createElement('tr');
+                
+                row.innerHTML = `
+                    <td>${child.name}</td>
+                    <td>${child.age}</td>
+                    <td>${child.parent}</td>
+                    <td>${child.date}</td>
+                    <td><span class="status-badge ${child.status === 'active' ? 'status-active' : 'status-pending'}">${child.status === 'active' ? 'نشط' : 'في الانتظار'}</span></td>
+                    <td>
+                        <button class="btn btn-primary btn-sm">تفاصيل</button>
+                    </td>
+                `;
+                
+                tableBody.appendChild(row);
+            });
+        }
+        
+        // تحديث جدول المدفوعات
+        function updatePaymentsTable() {
+            const tableBody = document.querySelector('#payments-table tbody');
+            tableBody.innerHTML = '';
+            
+            paymentsData.slice(0, 4).forEach(payment => {
+                const row = document.createElement('tr');
+                
+                row.innerHTML = `
+                    <td>${payment.id}</td>
+                    <td>${payment.customer}</td>
+                    <td>${payment.date}</td>
+                    <td>${payment.amount}</td>
+                    <td><span class="status-badge ${payment.status === 'active' ? 'status-active' : 'status-pending'}">${payment.status === 'active' ? 'مكتمل' : 'قيد المراجعة'}</span></td>
+                    <td>
+                        <button class="btn btn-primary btn-sm">تفاصيل</button>
+                    </td>
+                `;
+                
+                tableBody.appendChild(row);
+            });
+        }
+        
+        // تحديث قائمة المستخدمين
+        function updateUsersList() {
+            const userList = document.getElementById('user-list');
+            userList.innerHTML = '';
+            
+            usersData.forEach(user => {
+                const userItem = document.createElement('div');
+                userItem.className = 'user-item';
+                
+                userItem.innerHTML = `
+                    <div class="user-avatar-sm">${user.avatar}</div>
+                    <div class="user-details">
+                        <h4>${user.name}</h4>
+                        <p>${user.email} - ${user.role === 'admin' ? 'مدير' : 'مستخدم عادي'}</p>
+                    </div>
+                    <div class="user-actions">
+                        <button class="btn btn-primary btn-sm">تعديل</button>
+                        <button class="btn btn-sm" style="background: ${user.role === 'admin' ? 'var(--warning)' : 'var(--info)'}; color: white;">
+                            ${user.role === 'admin' ? 'إزالة الصلاحيات' : 'ترقية إلى مدير'}
+                        </button>
+                    </div>
+                `;
+                
+                userList.appendChild(userItem);
+            });
+        }
+        
+        // تحديث الإحصائيات
+        function updateStats() {
+            document.getElementById('total-children').textContent = childrenData.length;
+            document.getElementById('total-parents').textContent = childrenData.length + 15; // تقدير افتراضي
+            document.getElementById('total-revenue').textContent = (childrenData.length * 1200).toLocaleString();
+            document.getElementById('attendance-rate').textContent = '92%';
+        }
+        
+        // البحث في الجداول
+        function handleSearch() {
+            const searchText = document.getElementById('searchInput').value.toLowerCase();
+            
+            // البحث في جدول الأطفال
+            const childrenRows = document.querySelectorAll('#children-table tbody tr');
+            childrenRows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchText) ? '' : 'none';
+            });
+            
+            // البحث في جدول المدفوعات
+            const paymentsRows = document.querySelectorAll('#payments-table tbody tr');
+            paymentsRows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchText) ? '' : 'none';
+            });
+        }
+        
+        // عرض الأقسام
+        function showSection(sectionId) {
+            // إخفاء جميع الأقسام
+            document.querySelectorAll('.user-management, #dashboard-section').forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            // إلغاء تنشيط جميع عناصر القائمة
+            document.querySelectorAll('.sidebar-menu a').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // تنشيط العنصر المحدد
+            event.target.classList.add('active');
+            
+            // عرض القسم المحدد
+            document.getElementById(sectionId + '-section').style.display = 'block';
+        }
+        
+        // عرض جميع الأطفال
+        function showAllChildren() {
+            showSection('children');
+        }
+        
+        // عرض جميع المدفوعات
+        function showAllPayments() {
+            showSection('payments');
+        }
+        
+        // عرض/إخفاء قائمة المستخدم
+        function toggleUserMenu() {
+            alert('هنا يمكن عرض قائمة المستخدم مع خيارات مثل تعديل الملف الشخصي أو تسجيل الخروج');
+        }
     </script>
-    <!-- ض هذا قبل </body> في الموقع الرئيسي -->
-
-<button onclick="location.href='https://Mohamed108del.github.io/admin.html'"  
-  style="position: fixed; bottom: 10px; left: 10px;  
-  background: transparent; border: none;  
-  width: 50px; height: 50px; cursor: pointer;"  
-  title="لوحة التحكم"> 
-</button>
 </body>
 </html>
