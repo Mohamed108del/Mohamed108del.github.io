@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>خالو السيد</title>
+<style>
+  body {
+    font-family: "Cairo", sans-serif;
+    text-align: center;
+    background: #f7f9fb;
+    padding: 20px;
+    color: #222;
+  }
+  h1 {
+    color: #0078d7;
+  }
+  .card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.15);
+    padding: 20px;
+    display: inline-block;
+  }
+  img#preview {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 12px;
+    border: 3px solid #0078d7;
+    margin-bottom: 10px;
+  }
+  input[type=file] {
+    margin: 10px 0;
+  }
+  #qr img {
+    margin-top: 15px;
+    border: 2px solid #0078d7;
+    border-radius: 8px;
+  }
+</style>
+</head>
+<body>
+
+<h1>موقع خالو السيد</h1>
+
+<div class="card">
+  <h2>📸 ارفع صورتك ليتم إنشاء رمز QR لها</h2>
+  <img id="preview" src="https://via.placeholder.com/200" alt="صورتك الشخصية"><br>
+  <input type="file" accept="image/*" id="imgUpload"><br>
+  <div id="qr"></div>
+</div>
+
+<script>
+  const fileInput = document.getElementById('imgUpload');
+  const preview = document.getElementById('preview');
+  const qrDiv = document.getElementById('qr');
+
+  fileInput.addEventListener('change', function(){
+    const file = this.files[0];
+    if(file){
+      const reader = new FileReader();
+      reader.onload = function(e){
+        const imageURL = e.target.result; // رابط الصورة المحلية
+        preview.src = imageURL;
+
+        // توليد كود QR للرابط (سيكون Base64)
+        const qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" + encodeURIComponent(imageURL);
+        qrDiv.innerHTML = `<p>📱 امسح هذا الكود لعرض الصورة:</p><img src="${qrUrl}" alt="QR للصورة">`;
+      }
+      reader.readAsDataURL(file);
+    }
+  });
+</script>
+
+</body>
+</html>
