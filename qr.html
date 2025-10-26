@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>خالو السيد</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  :root {
+    --primary: #0078d7;
+    --primary-light: #e6f2fc;
+    --dark: #222;
+    --light: #f7f9fb;
+    --white: #ffffff;
+    --shadow: rgba(0, 0, 0, 0.15);
+    --success: #28a745;
+  }
+  
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    font-family: "Cairo", sans-serif;
+    text-align: center;
+    background: linear-gradient(135deg, #f7f9fb 0%, #e6f2fc 100%);
+    padding: 20px;
+    color: var(--dark);
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  
+  /* تأثيرات الدخول */
+  .fade-in {
+    animation: fadeIn 1.2s ease-out;
+  }
+  
+  .slide-in-top {
+    animation: slideInTop 1s ease-out;
+  }
+  
+  .slide-in-bottom {
+    animation: slideInBottom 1s ease-out 0.3s both;
+  }
+  
+  .bounce-in {
+    animation: bounceIn 1s ease-out 0.6s both;
+  }
+  
+  .pulse {
+    animation: pulse 2s infinite 1.5s;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  @keyframes slideInTop {
+    from { 
+      opacity: 0;
+      transform: translateY(-50px);
+    }
+    to { 
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes slideInBottom {
+    from { 
+      opacity: 0;
+      transform: translateY(50px);
+    }
+    to { 
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes bounceIn {
+    0% {
+      opacity: 0;
+      transform: scale(0.3);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.05);
+    }
+    70% {
+      transform: scale(0.9);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  h1 {
+    color: var(--primary);
+    margin: 20px 0;
+    font-size: 2.5rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  .card {
+    background: var(--white);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    padding: 30px;
+    margin: 20px auto;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, var(--primary), #00a8ff);
+  }
+  
+  .card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+  }
+  
+  .card h2 {
+    color: var(--primary);
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .preview-container {
+    position: relative;
+    display: inline-block;
+    margin: 15px 0;
+  }
+  
+  #preview {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 15px;
+    border: 3px solid var(--primary);
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  }
+  
+  .upload-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--primary);
+    color: white;
+    padding: 12px 25px;
+    border-radius: 50px;
+    cursor: pointer;
+    margin: 15px 0;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 120, 215, 0.3);
+    border: none;
+    font-family: "Cairo", sans-serif;
+  }
+  
+  .upload-btn:hover {
+    background: #005a9e;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 120, 215, 0.4);
+  }
+  
+  #imgUpload {
+    display: none;
+  }
+  
+  .qr-section {
+    margin-top: 25px;
+    padding-top: 25px;
+    border-top: 1px dashed #ddd;
+    display: none;
+  }
+  
+  .qr-section.active {
+    display: block;
+    animation: fadeIn 0.8s ease;
+  }
+  
+  .qr-container {
+    display: inline-block;
+    padding: 20px;
+    background: var(--primary-light);
+    border-radius: 15px;
+    margin-top: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  }
+  
+  .qr-container img {
+    border-radius: 10px;
+    border: 2px solid var(--primary);
+    max-width: 100%;
+    width: 200px;
+    height: 200px;
+  }
+  
+  .message {
+    margin: 15px 0;
+    padding: 15px;
+    border-radius: 10px;
+    background: #fff9e6;
+    color: #856404;
+    border: 1px solid #ffeaa7;
+    text-align: right;
+  }
+  
+  .success {
+    background: #e6f7ee;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+  }
+  
+  .error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+  }
+  
+  .info {
+    background: #e6f2fc;
+    color: #004085;
+    border: 1px solid #b8daff;
+  }
+  
+  .instructions {
+    text-align: right;
+    margin: 20px 0;
+    padding: 20px;
+    background: var(--primary-light);
+    border-radius: 15px;
+    border-right: 4px solid var(--primary);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  }
+  
+  .instructions h3 {
+    color: var(--primary);
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .instructions ol {
+    text-align: right;
+    padding-right: 20px;
+  }
+  
+  .instructions li {
+    margin-bottom: 10px;
+    padding-right: 10px;
+  }
+  
+  .download-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--success);
+    color: white;
+    padding: 12px 25px;
+    border-radius: 50px;
+    cursor: pointer;
+    margin-top: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+    border: none;
+    font-family: "Cairo", sans-serif;
+  }
+  
+  .download-btn:hover {
+    background: #218838;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+  }
+  
+  .loading {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 10px;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  .solution-info {
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-radius: 12px;
+    padding: 15px;
+    margin: 15px 0;
+    text-align: right;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+  }
+  
+  .solution-info h4 {
+    color: #856404;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .floating {
+    animation: floating 3s ease-in-out infinite;
+  }
+  
+  @keyframes floating {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+  }
+  
+  @media (max-width: 600px) {
+    .card {
+      padding: 20px;
+    }
+    
+    h1 {
+      font-size: 2rem;
+    }
+    
+    .card h2 {
+      font-size: 1.3rem;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1 class="slide-in-top">موقع خالو السيد</h1>
+  
+  <div class="instructions slide-in-bottom">
+    <h3><i class="fas fa-info-circle"></i> كيفية استخدام الموقع:</h3>
+    <ol>
+      <li>انقر على زر "اختر صورة" لرفع صورتك</li>
+      <li>سيتم عرض صورتك في الموقع</li>
+      <li>سيتم إنشاء رمز QR للصورة تلقائياً</li>
+      <li>يمكنك مسح رمز QR لعرض الصورة على هاتفك</li>
+    </ol>
+  </div>
+
+  <div class="card bounce-in">
+    <h2><i class="fas fa-camera"></i> ارفع صورتك ليتم إنشاء رمز QR لها</h2>
+    
+    <div class="preview-container">
+      <img id="preview" src="https://via.placeholder.com/200?text=صورتك+هنا" alt="صورتك الشخصية" class="pulse">
+    </div>
+    
+    <br>
+    
+    <label for="imgUpload" class="upload-btn">
+      <i class="fas fa-upload"></i> اختر صورة
+    </label>
+    <input type="file" accept="image/*" id="imgUpload">
+    
+    <div id="message" class="message">
+      <i class="fas fa-exclamation-circle"></i> لم يتم رفع أي صورة بعد. الرجاء اختيار صورة لإنشاء رمز QR.
+    </div>
+    
+    <div class="solution-info">
+      <h4><i class="fas fa-lightbulb"></i> لحل مشكلة فتح الصورة عند مسح QR:</h4>
+      <ul style="text-align: right; padding-right: 20px;">
+        <li>استخدم تطبيق "Google Lens" لمسح الرمز (الأفضل)</li>
+        <li>تأكد من أن الصورة صغيرة الحجم (أقل من 500KB)</li>
+        <li>جرب استخدام صورة بدقة أقل إذا لم تفتح</li>
+        <li>بعض التطبيقات لا تدعم فتح بيانات Base64 مباشرة</li>
+      </ul>
+    </div>
+    
+    <div id="qrSection" class="qr-section">
+      <p><i class="fas fa-qrcode"></i> امسح هذا الكود لعرض الصورة:</p>
+      <div class="qr-container">
+        <div id="qrCode"></div>
+      </div>
+      <div class="message info">
+        <i class="fas fa-mobile-alt"></i> <strong>ملاحظة:</strong> نوصي باستخدام Google Lens لمسح الرمز للحصول على أفضل نتيجة.
+      </div>
+      <button id="downloadBtn" class="download-btn" style="display:none;">
+        <i class="fas fa-download"></i> تحميل رمز QR
+      </button>
+      
+      <!-- رابط بديل لفتح الصورة -->
+      <div id="shareSection" style="margin-top: 15px; display: none;">
+        <p>أو انسخ الرابط أدناه وافتحه في المتصفح:</p>
+        <input type="text" id="imageLink" readonly style="width: 80%; padding: 8px; border-radius: 5px; border: 1px solid #ccc; margin: 10px 0;">
+        <button onclick="copyLink()" class="upload-btn" style="background: #6c757d;">
+          <i class="fas fa-copy"></i> نسخ الرابط
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- مكتبة QRCode.js -->
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+
+<script>
+  const fileInput = document.getElementById('imgUpload');
+  const preview = document.getElementById('preview');
+  const qrCodeDiv = document.getElementById('qrCode');
+  const qrSection = document.getElementById('qrSection');
+  const messageDiv = document.getElementById('message');
+  const downloadBtn = document.getElementById('downloadBtn');
+  const shareSection = document.getElementById('shareSection');
+  const imageLink = document.getElementById('imageLink');
+
+  // دالة لضغط الصورة بشكل أكبر
+  function compressImage(file, callback) {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function(event) {
+      const img = new Image();
+      img.src = event.target.result;
+      img.onload = function() {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        // تحديد أقصى حجم أصغر
+        const MAX_WIDTH = 400;
+        const MAX_HEIGHT = 400;
+        let width = img.width;
+        let height = img.height;
+        
+        if (width > height) {
+          if (width > MAX_WIDTH) {
+            height *= MAX_WIDTH / width;
+            width = MAX_WIDTH;
+          }
+        } else {
+          if (height > MAX_HEIGHT) {
+            width *= MAX_HEIGHT / height;
+            height = MAX_HEIGHT;
+          }
+        }
+        
+        canvas.width = width;
+        canvas.height = height;
+        ctx.drawImage(img, 0, 0, width, height);
+        
+        // تحويل إلى JPG بجودة منخفضة لتقليل الحجم
+        const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.5);
+        callback(compressedDataUrl);
+      };
+    };
+  }
+
+  // دالة لنسخ الرابط
+  function copyLink() {
+    imageLink.select();
+    document.execCommand('copy');
+    alert('تم نسخ الرابط! الصقها في متصفحك لرؤية الصورة.');
+  }
+
+  fileInput.addEventListener('change', function(){
+    const file = this.files[0];
+    if(file){
+      // التحقق من نوع الملف
+      if (!file.type.match('image.*')) {
+        messageDiv.innerHTML = '<i class="fas fa-exclamation-triangle"></i> الرجاء اختيار ملف صورة فقط (مثل JPG، PNG)';
+        messageDiv.className = 'message error';
+        return;
+      }
+      
+      // التحقق من حجم الملف (لا يزيد عن 2MB)
+      if (file.size > 2 * 1024 * 1024) {
+        messageDiv.innerHTML = '<i class="fas fa-exclamation-triangle"></i> حجم الصورة كبير جداً. الرجاء اختيار صورة أقل من 2MB';
+        messageDiv.className = 'message error';
+        return;
+      }
+      
+      messageDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري معالجة الصورة وإنشاء رمز QR...';
+      messageDiv.className = 'message info';
+      qrCodeDiv.innerHTML = '<div class="loading"></div>';
+      qrSection.classList.add('active');
+      shareSection.style.display = 'none';
+      
+      // ضغط الصورة أولاً
+      compressImage(file, function(compressedImageURL) {
+        preview.src = compressedImageURL;
+        
+        // إنشاء رمز QR باستخدام مكتبة QRCode
+        try {
+          // تنظيف محتوى QR السابق
+          qrCodeDiv.innerHTML = '';
+          
+          // استخدام نوع QR code يمكنه تخزين بيانات أكثر
+          const qr = qrcode(10, 'M'); // المستوى 10 يمكنه تخزين بيانات أكثر
+          qr.addData(compressedImageURL);
+          qr.make();
+          
+          // إنشاء صورة QR
+          const qrImage = qr.createImgTag(4, 0);
+          qrCodeDiv.innerHTML = qrImage;
+          
+          // إضافة خاصية التحميل للصورة
+          const qrImg = qrCodeDiv.querySelector('img');
+          qrImg.onload = function() {
+            // إظهار رسالة نجاح
+            messageDiv.innerHTML = '<i class="fas fa-check-circle"></i> تم رفع الصورة بنجاح! تم إنشاء رمز QR أدناه.';
+            messageDiv.className = 'message success';
+            
+            // تفعيل زر التحميل
+            downloadBtn.style.display = 'inline-block';
+            downloadBtn.onclick = function() {
+              const link = document.createElement('a');
+              link.download = 'qr-code.png';
+              link.href = qrImg.src;
+              link.click();
+            };
+            
+            // إظهار رابط الصورة كبديل
+            shareSection.style.display = 'block';
+            imageLink.value = compressedImageURL;
+          };
+          
+          qrImg.onerror = function() {
+            messageDiv.innerHTML = '<i class="fas fa-exclamation-triangle"></i> حدث خطأ في عرض رمز QR. الرجاء المحاولة مرة أخرى.';
+            messageDiv.className = 'message error';
+          };
+          
+        } catch (error) {
+          console.error('خطأ في إنشاء QR:', error);
+          messageDiv.innerHTML = '<i class="fas fa-exclamation-triangle"></i> تعذر إنشاء رمز QR للصورة. جرب صورة أصغر.';
+          messageDiv.className = 'message error';
+        }
+      });
+      
+    } else {
+      messageDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> لم يتم اختيار أي ملف. الرجاء اختيار صورة.';
+      messageDiv.className = 'message error';
+      qrSection.classList.remove('active');
+      downloadBtn.style.display = 'none';
+    }
+  });
+</script>
+
+</body>
+</html>
