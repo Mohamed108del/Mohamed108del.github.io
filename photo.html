@@ -1,0 +1,2032 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>محمد | مطور ويب | موقعي الشخصي</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Tajawal', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary-dark: #0A0A0F;
+            --secondary-dark: #0d1b2a;
+            --accent-blue: #00B4D8;
+            --accent-blue-dark: #0096C7;
+            --accent-silver: #E0E1DD;
+            --text-light: #F8F9FA;
+            --text-gray: #ADB5BD;
+            --success-green: #2ECC71;
+            --facebook-color: #1877F2;
+            --tiktok-color: #000000;
+            --instagram-color: #E4405F;
+            --telegram-color: #0088cc;
+            --whatsapp-color: #25D366;
+            --email-color: #EA4335;
+            --gradient-primary: linear-gradient(135deg, #00B4D8, #0077B6);
+            --gradient-secondary: linear-gradient(135deg, #0d1b2a, #1B263B);
+        }
+
+        body {
+            background-color: var(--primary-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(0, 180, 216, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(0, 180, 216, 0.05) 0%, transparent 20%);
+        }
+
+        /* تأثيرات الإضاءة والأنيميشن */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 15px var(--accent-blue); }
+            50% { box-shadow: 0 0 25px var(--accent-blue); }
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--accent-blue) }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
+        /* التمرير السلس */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* الشريط العلوي */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: rgba(13, 27, 42, 0.97);
+            backdrop-filter: blur(15px);
+            z-index: 1000;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid rgba(0, 180, 216, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        header.scrolled {
+            padding: 0.7rem 2rem;
+            background-color: rgba(13, 27, 42, 0.98);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-silver));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 15px rgba(0, 180, 216, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            color: var(--accent-blue);
+            animation: pulse 2s infinite;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            right: 50%;
+            background-color: var(--accent-blue);
+            transition: all 0.3s ease;
+            transform: translateX(50%);
+        }
+
+        .nav-links a:hover::after {
+            width: 80%;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-blue);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-light);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu-btn:hover {
+            color: var(--accent-blue);
+            transform: scale(1.1);
+        }
+
+        /* القسم الرئيسي */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 6rem 2rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-secondary);
+            z-index: -1;
+            opacity: 0.7;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-silver));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .typing-text {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent-blue);
+            font-weight: 600;
+            overflow: hidden;
+            border-right: .15em solid var(--accent-blue);
+            white-space: nowrap;
+            margin: 0 auto;
+            letter-spacing: .15em;
+            animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
+            max-width: fit-content;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: var(--text-gray);
+            margin-bottom: 2.5rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.8;
+        }
+
+        .profile-img-container {
+            width: 280px;
+            height: 280px;
+            margin: 0 auto 2.5rem;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid var(--accent-blue);
+            animation: glow 3s infinite;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 180, 216, 0.2);
+            cursor: pointer;
+            transition: all 0.5s ease;
+        }
+
+        .profile-img-container:hover {
+            transform: scale(1.05);
+            animation: glow 1s infinite, float 3s ease-in-out infinite;
+        }
+
+        .profile-img-container::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--accent-blue), transparent);
+            z-index: -1;
+            animation: pulse 3s infinite;
+        }
+
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s ease;
+        }
+
+        .profile-img:hover {
+            transform: scale(1.08);
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-top: 2.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.4s ease;
+            border: 2px solid transparent;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            min-width: 180px;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: all 0.6s ease;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: 0 5px 15px rgba(0, 180, 216, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 12px 30px rgba(0, 180, 216, 0.4);
+            border-color: var(--accent-silver);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--accent-blue);
+            border: 2px solid var(--accent-blue);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(0, 180, 216, 0.15);
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(0, 180, 216, 0.25);
+        }
+
+        .btn-success {
+            background-color: var(--success-green);
+            color: white;
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 12px 30px rgba(46, 204, 113, 0.4);
+        }
+
+        /* تأثير النقر على الأزرار */
+        .btn:active {
+            transform: translateY(-2px) scale(0.98);
+            transition: all 0.1s ease;
+        }
+
+        /* الأقسام العامة */
+        section {
+            padding: 6rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 4rem;
+            color: var(--accent-silver);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, var(--accent-blue), transparent);
+            border-radius: 2px;
+        }
+
+        /* قسم نبذة عني */
+        .about-content {
+            display: flex;
+            align-items: center;
+            gap: 4rem;
+            flex-wrap: wrap;
+        }
+
+        .about-text {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .about-text p {
+            font-size: 1.2rem;
+            color: var(--text-gray);
+            margin-bottom: 1.8rem;
+            text-align: justify;
+            line-height: 1.8;
+        }
+
+        .stats {
+            display: flex;
+            gap: 2rem;
+            margin: 3rem 0;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1.5rem;
+            background: rgba(13, 27, 42, 0.7);
+            border-radius: 15px;
+            flex: 1;
+            min-width: 150px;
+            border: 1px solid rgba(0, 180, 216, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent-blue);
+            box-shadow: 0 10px 20px rgba(0, 180, 216, 0.2);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-silver));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .skill {
+            background-color: rgba(0, 180, 216, 0.1);
+            padding: 0.7rem 1.3rem;
+            border-radius: 50px;
+            border: 1px solid rgba(0, 180, 216, 0.3);
+            color: var(--accent-blue);
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .skill:hover {
+            background-color: rgba(0, 180, 216, 0.2);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 180, 216, 0.2);
+        }
+
+        .skill i {
+            font-size: 1.1rem;
+        }
+
+        /* قسم المشاريع */
+        #projects {
+            background-color: rgba(13, 27, 42, 0.3);
+            border-radius: 30px;
+            margin-top: 2rem;
+        }
+
+        .projects-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .project-card {
+            background-color: rgba(13, 27, 42, 0.7);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 180, 216, 0.1);
+            transition: all 0.4s ease;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .project-card:hover {
+            transform: translateY(-15px);
+            border-color: var(--accent-blue);
+            box-shadow: 0 15px 30px rgba(0, 180, 216, 0.25);
+        }
+
+        .project-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 1px solid rgba(0, 180, 216, 0.1);
+            transition: all 0.5s ease;
+        }
+
+        .project-card:hover .project-img {
+            transform: scale(1.05);
+        }
+
+        .project-content {
+            padding: 1.8rem;
+        }
+
+        .project-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent-silver);
+        }
+
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.7rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .project-tag {
+            background-color: rgba(0, 180, 216, 0.1);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--accent-blue);
+            transition: all 0.3s ease;
+        }
+
+        .project-tag:hover {
+            background-color: rgba(0, 180, 216, 0.2);
+            transform: translateY(-3px);
+        }
+
+        .project-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: rgba(0, 180, 216, 0.1);
+            color: var(--accent-blue);
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 1px solid var(--accent-blue);
+            width: 100%;
+            justify-content: center;
+        }
+
+        .project-btn:hover {
+            background-color: var(--accent-blue);
+            color: var(--primary-dark);
+            box-shadow: 0 5px 15px rgba(0, 180, 216, 0.3);
+        }
+
+        /* قسم التواصل الاجتماعي المدمج */
+        .social-media-section {
+            text-align: center;
+            margin-top: 5rem;
+            padding: 4rem 2rem;
+            background: var(--gradient-secondary);
+            border-radius: 30px;
+            border: 1px solid rgba(0, 180, 216, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-media-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(0, 180, 216, 0.05), transparent);
+            z-index: -1;
+        }
+
+        .social-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .social-platform-card {
+            background-color: rgba(13, 27, 42, 0.8);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.4s ease;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            min-height: 320px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .social-platform-card:hover {
+            transform: translateY(-15px) scale(1.03);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .social-platform-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            transition: all 0.3s ease;
+        }
+
+        /* ألوان خاصة بكل منصة */
+        .facebook-card::before { background: var(--facebook-color); }
+        .tiktok-card::before { background: var(--tiktok-color); }
+        .instagram-card::before { background: var(--instagram-color); }
+        .telegram-card::before { background: var(--telegram-color); }
+
+        .social-platform-card:hover::before {
+            height: 100%;
+            opacity: 0.1;
+        }
+
+        .platform-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            height: 100px;
+            width: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            border-radius: 50%;
+            transition: all 0.4s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* ألوان أيقونات */
+        .facebook-icon { 
+            color: var(--facebook-color);
+            background: rgba(24, 119, 242, 0.1);
+        }
+        .tiktok-icon { 
+            color: var(--tiktok-color);
+            background: rgba(0, 0, 0, 0.1);
+        }
+        .instagram-icon { 
+            color: var(--instagram-color);
+            background: rgba(228, 64, 95, 0.1);
+        }
+        .telegram-icon { 
+            color: var(--telegram-color);
+            background: rgba(0, 136, 204, 0.1);
+        }
+
+        .social-platform-card:hover .platform-icon {
+            transform: scale(1.2) rotate(5deg);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .platform-content {
+            position: relative;
+            z-index: 2;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .social-platform-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--accent-silver);
+        }
+
+        .social-platform-card p {
+            color: var(--text-gray);
+            margin-bottom: 1.8rem;
+            line-height: 1.7;
+            flex-grow: 1;
+        }
+
+        .platform-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            cursor: pointer;
+            width: 100%;
+            position: relative;
+            z-index: 2;
+            margin-top: auto;
+        }
+
+        /* ألوان أزرار */
+        .facebook-btn { 
+            background-color: var(--facebook-color);
+            color: white;
+        }
+        .tiktok-btn { 
+            background-color: var(--tiktok-color);
+            color: white;
+        }
+        .instagram-btn { 
+            background: linear-gradient(45deg, #405DE6, #E4405F);
+            color: white;
+        }
+        .telegram-btn { 
+            background-color: var(--telegram-color);
+            color: white;
+        }
+
+        .platform-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            border-color: white;
+        }
+
+        /* قسم الهاتف وواتساب */
+        .direct-contact-section {
+            text-align: center;
+            margin-top: 5rem;
+            padding: 3.5rem;
+            background-color: rgba(13, 27, 42, 0.7);
+            border-radius: 25px;
+            border: 1px solid rgba(0, 180, 216, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .direct-contact-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(0, 180, 216, 0.05), transparent);
+            z-index: -1;
+        }
+
+        .direct-contact-cards {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+            margin-top: 2.5rem;
+        }
+
+        .direct-contact-card {
+            background-color: rgba(0, 180, 216, 0.1);
+            padding: 2rem 2.5rem;
+            border-radius: 15px;
+            border: 1px solid rgba(0, 180, 216, 0.3);
+            transition: all 0.3s ease;
+            flex: 1;
+            min-width: 250px;
+            max-width: 300px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .direct-contact-card:hover {
+            transform: translateY(-10px) scale(1.03);
+            background-color: rgba(0, 180, 216, 0.2);
+            box-shadow: 0 15px 30px rgba(0, 180, 216, 0.3);
+        }
+
+        .direct-contact-icon {
+            font-size: 3rem;
+            color: var(--accent-blue);
+            margin-bottom: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .whatsapp-card .direct-contact-icon { color: var(--whatsapp-color); }
+        .phone-card .direct-contact-icon { color: var(--accent-blue); }
+
+        .direct-contact-card:hover .direct-contact-icon {
+            transform: scale(1.2) rotate(10deg);
+        }
+
+        .contact-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 1rem 0;
+            color: var(--accent-silver);
+        }
+
+        /* قسم الموقع الجغرافي */
+        .location-section {
+            text-align: center;
+            margin-top: 4rem;
+            padding: 3.5rem;
+            background-color: rgba(13, 27, 42, 0.7);
+            border-radius: 25px;
+            border: 1px solid rgba(0, 180, 216, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .location-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(46, 204, 113, 0.1), transparent);
+            z-index: -1;
+        }
+
+        .location-card {
+            background: linear-gradient(135deg, rgba(46, 204, 113, 0.1), rgba(0, 180, 216, 0.1));
+            padding: 2.5rem;
+            border-radius: 20px;
+            border: 2px solid var(--success-green);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .location-card:hover {
+            transform: translateY(-15px) scale(1.03);
+            box-shadow: 0 20px 40px rgba(46, 204, 113, 0.3);
+        }
+
+        .location-icon {
+            font-size: 4rem;
+            color: var(--success-green);
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .location-card:hover .location-icon {
+            transform: scale(1.2) rotate(5deg);
+        }
+
+        .location-details {
+            font-size: 1.4rem;
+            color: var(--accent-silver);
+            margin: 1.5rem 0;
+            line-height: 1.8;
+        }
+
+        .location-address {
+            font-size: 1.2rem;
+            color: var(--text-gray);
+            margin-top: 1rem;
+        }
+
+        /* زر البريد الإلكتروني */
+        .email-section {
+            text-align: center;
+            margin-top: 4rem;
+            padding: 3rem;
+            background-color: rgba(13, 27, 42, 0.7);
+            border-radius: 20px;
+            border: 1px solid rgba(0, 180, 216, 0.2);
+        }
+
+        .email-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            background: linear-gradient(135deg, var(--email-color), #D44638);
+            color: white;
+            padding: 1.2rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.3rem;
+            transition: all 0.4s ease;
+            border: 2px solid transparent;
+            margin-top: 1.5rem;
+            box-shadow: 0 5px 20px rgba(234, 67, 53, 0.3);
+            cursor: pointer;
+        }
+
+        .email-btn:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 12px 30px rgba(234, 67, 53, 0.4);
+            border-color: white;
+        }
+
+        .email-btn:active {
+            animation: shake 0.5s;
+        }
+
+        /* نموذج التواصل */
+        .contact-form-container {
+            max-width: 800px;
+            margin: 4rem auto 0;
+            background-color: rgba(13, 27, 42, 0.7);
+            padding: 3rem;
+            border-radius: 25px;
+            border: 1px solid rgba(0, 180, 216, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 1.8rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.8rem;
+            color: var(--accent-silver);
+            font-weight: 600;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            background-color: rgba(10, 10, 15, 0.5);
+            border: 1px solid rgba(0, 180, 216, 0.2);
+            border-radius: 10px;
+            color: var(--text-light);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 15px rgba(0, 180, 216, 0.3);
+            transform: translateY(-2px);
+        }
+
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 1.2rem 2.5rem;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin: 2rem auto 0;
+            width: 100%;
+            box-shadow: 0 5px 20px rgba(0, 180, 216, 0.3);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0, 180, 216, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(-2px);
+        }
+
+        /* رسائل التنبيه */
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 30px;
+            padding: 1.2rem 2rem;
+            background: var(--gradient-primary);
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transform: translateX(400px);
+            transition: all 0.5s ease;
+            max-width: 400px;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.hide {
+            transform: translateX(400px);
+        }
+
+        .notification-icon {
+            font-size: 1.5rem;
+        }
+
+        /* التذييل */
+        footer {
+            background-color: rgba(13, 27, 42, 0.97);
+            padding: 4rem 2rem 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(0, 180, 216, 0.2);
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            text-align: right;
+        }
+
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: bold;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-silver));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 1.5rem;
+            text-align: right;
+        }
+
+        .footer-about {
+            color: var(--text-gray);
+            line-height: 1.8;
+        }
+
+        .footer-links-container h4 {
+            color: var(--accent-silver);
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .footer-links a {
+            color: var(--text-gray);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-blue);
+            transform: translateX(-5px);
+        }
+
+        .social-footer {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+        }
+
+        .social-footer a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background-color: rgba(0, 180, 216, 0.1);
+            border-radius: 50%;
+            color: var(--accent-blue);
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .social-footer a:hover {
+            background-color: var(--accent-blue);
+            color: var(--primary-dark);
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 5px 15px rgba(0, 180, 216, 0.3);
+        }
+
+        .copyright {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(0, 180, 216, 0.1);
+        }
+
+        /* جعل الموقع متجاوب */
+        @media (max-width: 1100px) {
+            .hero h1 {
+                font-size: 3.2rem;
+            }
+            
+            .section-title {
+                font-size: 2.5rem;
+            }
+            
+            .social-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .typing-text {
+                font-size: 1.4rem;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .nav-links {
+                position: fixed;
+                top: 80px;
+                right: -100%;
+                flex-direction: column;
+                background-color: rgba(13, 27, 42, 0.98);
+                width: 100%;
+                text-align: center;
+                padding: 2rem;
+                transition: all 0.5s ease;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+                border-top: 1px solid rgba(0, 180, 216, 0.2);
+                z-index: 999;
+            }
+            
+            .nav-links.active {
+                right: 0;
+            }
+            
+            .about-content {
+                flex-direction: column;
+            }
+            
+            .direct-contact-cards {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+            
+            section {
+                padding: 4rem 1.5rem;
+            }
+            
+            .contact-form-container {
+                padding: 2rem;
+            }
+            
+            .social-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .notification {
+                left: 20px;
+                right: 20px;
+                max-width: calc(100% - 40px);
+                transform: translateY(-200px);
+            }
+            
+            .notification.show {
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .profile-img-container {
+                width: 220px;
+                height: 220px;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .social-platform-card, .direct-contact-card, .location-card {
+                padding: 1.5rem;
+            }
+            
+            .email-btn {
+                padding: 1rem 1.5rem;
+                font-size: 1.1rem;
+            }
+            
+            .location-details {
+                font-size: 1.1rem;
+            }
+        }
+
+        /* تأثيرات التمرير */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* شريط التقدم */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 4px;
+            background: var(--gradient-primary);
+            z-index: 1001;
+            transition: width 0.2s ease;
+        }
+
+        /* زر العودة للأعلى */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background: var(--gradient-primary);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            text-decoration: none;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+            z-index: 999;
+            box-shadow: 0 5px 20px rgba(0, 180, 216, 0.3);
+            cursor: pointer;
+        }
+
+        .back-to-top.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-8px) scale(1.1);
+            box-shadow: 0 10px 25px rgba(0, 180, 216, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <!-- شريط التقدم -->
+    <div class="scroll-progress"></div>
+    
+    <!-- زر العودة للأعلى -->
+    <div class="back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <!-- الشريط العلوي -->
+    <header id="header">
+        <nav>
+            <div class="logo">
+                <i class="fas fa-code logo-icon"></i>
+                <span>محمد</span>
+            </div>
+            
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <div class="nav-links">
+                <a href="#home">الرئيسية</a>
+                <a href="#about">نبذة عني</a>
+                <a href="#projects">مشاريعي</a>
+                <a href="#connect">تواصل معي</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- القسم الرئيسي -->
+    <section id="home" class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content fade-in">
+            <div class="profile-img-container" id="profileImageContainer">
+                <img src="https://i.pinimg.com/736x/7b/93/79/7b9379786b38905fcaee5a2dc16badfd.jpg" alt="صورتي الشخصية" class="profile-img" id="profileImage">
+            </div>
+            <h1>مرحبًا، أنا محمد</h1>
+            <div class="typing-text">مطور ويب محترف</div>
+            <p>أهلاً بكم في موقعي الشخصي. أنا مطور ويب متخصص في إنشاء تطبيقات ويب حديثة باستخدام Python, Node.js, و HTML/CSS. أسعى دائمًا لتحويل الأفكار إلى حقيقة رقمية.</p>
+            
+            <div class="cta-buttons">
+                <a href="#projects" class="btn btn-primary">
+                    <i class="fas fa-eye"></i> مشاهد مشاريعي
+                </a>
+                <a href="#connect" class="btn btn-secondary">
+                    <i class="fas fa-paper-plane"></i> تواصل معي الآن
+                </a>
+                <button id="downloadCV" class="btn btn-success">
+                    <i class="fas fa-download"></i> تحميل السيرة الذاتية
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- قسم نبذة عني -->
+    <section id="about">
+        <h2 class="section-title fade-in">نبذة عني</h2>
+        <div class="about-content">
+            <div class="about-text fade-in">
+                <p>مرحبًا، أنا محمد، مطور ويب محترف مع خبرة في إنشاء تطبيقات ويب متكاملة. أعمل حاليًا كمطور Full Stack متخصص في Python و Node.js مع معرفة قوية بتقنيات الواجهات الأمامية.</p>
+                <p>لدي شغف كبير بتحويل الأفكار الإبداعية إلى تطبيقات ويب عملية وجذابة. أستمتع بحل المشكلات التقنية وابتكار حلول برمجية مبتكرة تلبي احتياجات المستخدمين.</p>
+                <p>أؤمن بأن التعلم المستمر هو مفتاح النجاح في عالم التكنولوجيا، لذلك أواظب على تطوير مهاراتي وتعلم التقنيات الحديثة باستمرار.</p>
+                
+                <div class="stats">
+                    <div class="stat-item" onclick="showNotification('تم عرض معلومات المشاريع!', 'info')">
+                        <span class="stat-number">15+</span>
+                        <span>مشروع مكتمل</span>
+                    </div>
+                    <div class="stat-item" onclick="showNotification('خبرة عملية حقيقية!', 'info')">
+                        <span class="stat-number">3+</span>
+                        <span>سنوات خبرة</span>
+                    </div>
+                    <div class="stat-item" onclick="showNotification('عملاء سعداء بخدماتي!', 'success')">
+                        <span class="stat-number">100%</span>
+                        <span>رضا العملاء</span>
+                    </div>
+                </div>
+                
+                <h3 style="color: var(--accent-silver); margin-bottom: 1.5rem; font-size: 1.5rem;">مهاراتي</h3>
+                <div class="skills">
+                    <span class="skill" onclick="showNotification('Python - لغة البرمجة الأساسية', 'info')">
+                        <i class="fab fa-python"></i> Python
+                    </span>
+                    <span class="skill" onclick="showNotification('JavaScript - لغة الويب التفاعلية', 'info')">
+                        <i class="fab fa-js"></i> JavaScript
+                    </span>
+                    <span class="skill" onclick="showNotification('Node.js - بيئة تشغيل JavaScript', 'info')">
+                        <i class="fab fa-node-js"></i> Node.js
+                    </span>
+                    <span class="skill" onclick="showNotification('HTML/CSS - أساسيات الويب', 'info')">
+                        <i class="fab fa-html5"></i> HTML/CSS
+                    </span>
+                    <span class="skill" onclick="showNotification('قواعد البيانات - تخزين البيانات', 'info')">
+                        <i class="fas fa-database"></i> قواعد البيانات
+                    </span>
+                    <span class="skill" onclick="showNotification('React - مكتبة واجهات مستخدم', 'info')">
+                        <i class="fab fa-react"></i> React
+                    </span>
+                    <span class="skill" onclick="showNotification('DevOps - نشر وصيانة التطبيقات', 'info')">
+                        <i class="fas fa-server"></i> DevOps
+                    </span>
+                    <span class="skill" onclick="showNotification('تطبيقات الويب - تطوير كامل', 'info')">
+                        <i class="fas fa-mobile-alt"></i> تطبيقات الويب
+                    </span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- قسم المشاريع -->
+    <section id="projects">
+        <h2 class="section-title fade-in">مشاريعي</h2>
+        <p style="text-align: center; color: var(--text-gray); margin-bottom: 2rem; max-width: 800px; margin-left: auto; margin-right: auto;" class="fade-in">
+            هنا بعض المشاريع التي عملت عليها والتي تعكس مهاراتي وخبرتي في تطوير الويب.
+        </p>
+        
+        <div class="projects-container">
+            <!-- مشروع 1 -->
+            <div class="project-card fade-in" onclick="openProjectDemo('project1')">
+                <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="مشروع نظام إدارة" class="project-img">
+                <div class="project-content">
+                    <h3 class="project-title">نظام إدارة محتوى</h3>
+                    <p style="color: var(--text-gray); margin-bottom: 1.5rem;">نظام متكامل لإدارة المحتوى مع واجهة إدارة سهلة الاستخدام ودعم متعدد اللغات.</p>
+                    <div class="project-tags">
+                        <span class="project-tag">Python</span>
+                        <span class="project-tag">Django</span>
+                        <span class="project-tag">MySQL</span>
+                    </div>
+                    <button class="project-btn" onclick="event.stopPropagation(); showNotification('جاري فتح مشروع نظام إدارة المحتوى!', 'info')">
+                        <i class="fas fa-external-link-alt"></i> عرض المشروع
+                    </button>
+                </div>
+            </div>
+            
+            <!-- مشروع 2 -->
+            <div class="project-card fade-in" onclick="openProjectDemo('project2')">
+                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="مشروع تطبيق ويب" class="project-img">
+                <div class="project-content">
+                    <h3 class="project-title">منصة تعليمية</h3>
+                    <p style="color: var(--text-gray); margin-bottom: 1.5rem;">منصة تعليمية تفاعلية مع خاصية البث المباشر والدروس المسجلة ونظام متابعة الطلاب.</p>
+                    <div class="project-tags">
+                        <span class="project-tag">Node.js</span>
+                        <span class="project-tag">React</span>
+                        <span class="project-tag">MongoDB</span>
+                    </div>
+                    <button class="project-btn" onclick="event.stopPropagation(); showNotification('جاري فتح مشروع المنصة التعليمية!', 'info')">
+                        <i class="fas fa-external-link-alt"></i> عرض المشروع
+                    </button>
+                </div>
+            </div>
+            
+            <!-- مشروع 3 -->
+            <div class="project-card fade-in" onclick="openProjectDemo('project3')">
+                <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="مشروع تطبيق جوال" class="project-img">
+                <div class="project-content">
+                    <h3 class="project-title">تطبيق إدارة المهام</h3>
+                    <p style="color: var(--text-gray); margin-bottom: 1.5rem;">تطبيق ويب لإدارة المهام الشخصية والمشاريع مع ميزات التذكير والتعاون بين الفرق.</p>
+                    <div class="project-tags">
+                        <span class="project-tag">JavaScript</span>
+                        <span class="project-tag">Vue.js</span>
+                        <span class="project-tag">Firebase</span>
+                    </div>
+                    <button class="project-btn" onclick="event.stopPropagation(); showNotification('جاري فتح مشروع تطبيق إدارة المهام!', 'info')">
+                        <i class="fas fa-external-link-alt"></i> عرض المشروع
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- قسم التواصل -->
+    <section id="connect">
+        <h2 class="section-title fade-in">تواصل معي</h2>
+        <p style="text-align: center; color: var(--text-gray); margin-bottom: 2rem; max-width: 800px; margin-left: auto; margin-right: auto;" class="fade-in">
+            يمكنك التواصل معي عبر أي من المنصات التالية. أنا متاح للرد على استفساراتكم وأفكاركم وأرحب بأي فرص تعاون جديدة.
+        </p>
+        
+        <!-- قسم وسائل التواصل الاجتماعي المدمجة -->
+        <div class="social-media-section fade-in">
+            <h3 style="color: white; margin-bottom: 1rem; font-size: 2.5rem;">وسائل التواصل الاجتماعي</h3>
+            <p style="color: var(--text-gray); margin-bottom: 2rem; font-size: 1.2rem;">تواصل معي على مختلف المنصات الاجتماعية لمتابعة أحدث أعمالي ومشاريعي</p>
+            
+            <div class="social-grid">
+                <!-- فيسبوك -->
+                <div class="social-platform-card facebook-card" onclick="copyToClipboard('https://www.facebook.com/share/183kKLm5LF/', 'رابط الفيسبوك')">
+                    <div class="platform-icon facebook-icon">
+                        <i class="fab fa-facebook-f"></i>
+                    </div>
+                    <div class="platform-content">
+                        <h3>فيسبوك</h3>
+                        <p>تابعني على فيسبوك لمشاهدة أحدث المنشورات والتحديثات ومشاركة الأفكار مع المجتمع التقني</p>
+                        <a href="https://www.facebook.com/share/183kKLm5LF/" target="_blank" class="platform-btn facebook-btn" onclick="trackClick('facebook')">
+                            <i class="fab fa-facebook-f"></i> زيارة الصفحة
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- تيك توك -->
+                <div class="social-platform-card tiktok-card" onclick="copyToClipboard('https://www.tiktok.com/@giga559', 'رابط تيك توك')">
+                    <div class="platform-icon tiktok-icon">
+                        <i class="fab fa-tiktok"></i>
+                    </div>
+                    <div class="platform-content">
+                        <h3>تيك توك</h3>
+                        <p>شاهد فيديوهاتي القصيرة والمحتوى المرئي التعليمي حول البرمجة وتطوير الويب على تيك توك</p>
+                        <a href="https://www.tiktok.com/@giga559?_r=1&_t=ZS-92ngJYySmGL" target="_blank" class="platform-btn tiktok-btn" onclick="trackClick('tiktok')">
+                            <i class="fab fa-tiktok"></i> زيارة الحساب
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- انستجرام -->
+                <div class="social-platform-card instagram-card" onclick="copyToClipboard('https://www.instagram.com/audi.it.m', 'رابط الانستجرام')">
+                    <div class="platform-icon instagram-icon">
+                        <i class="fab fa-instagram"></i>
+                    </div>
+                    <div class="platform-content">
+                        <h3>انستجرام</h3>
+                        <p>تابعني على انستجرام لمشاهدة الصور والفيديوهات اليومية وخلف الكواليس من مشاريعي</p>
+                        <a href="https://www.instagram.com/audi.it.m?igsh=MWZnajN1MTk4emJwNQ==" target="_blank" class="platform-btn instagram-btn" onclick="trackClick('instagram')">
+                            <i class="fab fa-instagram"></i> زيارة الحساب
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- تلجرام -->
+                <div class="social-platform-card telegram-card" onclick="copyToClipboard('@fffzfs', 'اسم المستخدم على تلجرام')">
+                    <div class="platform-icon telegram-icon">
+                        <i class="fab fa-telegram-plane"></i>
+                    </div>
+                    <div class="platform-content">
+                        <h3>تلجرام</h3>
+                        <p>تواصل معي مباشرة على تلجرام للحصول على استجابة سريعة ومباشرة والتعاون في المشاريع</p>
+                        <a href="https://t.me/fffzfs" target="_blank" class="platform-btn telegram-btn" onclick="trackClick('telegram')">
+                            <i class="fab fa-telegram-plane"></i> تواصل الآن
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- قسم التواصل المباشر -->
+        <div class="direct-contact-section fade-in">
+            <h3 style="color: var(--accent-silver); margin-bottom: 1rem; font-size: 2rem;">التواصل المباشر</h3>
+            <p style="color: var(--text-gray); margin-bottom: 2rem; font-size: 1.1rem;">يمكنك التواصل معي مباشرة عبر الهاتف أو واتساب للحصول على استجابة أسرع</p>
+            
+            <div class="direct-contact-cards">
+                <!-- واتساب -->
+                <div class="direct-contact-card whatsapp-card" onclick="copyToClipboard('01020118437', 'رقم واتساب')">
+                    <div class="direct-contact-icon">
+                        <i class="fab fa-whatsapp"></i>
+                    </div>
+                    <h4>واتساب</h4>
+                    <div class="contact-number">01020118437</div>
+                    <a href="https://wa.me/201020118437" target="_blank" class="platform-btn" style="background-color: var(--whatsapp-color); color: white;" onclick="trackClick('whatsapp')">
+                        <i class="fab fa-whatsapp"></i> ارسال رسالة
+                    </a>
+                </div>
+                
+                <!-- هاتف -->
+                <div class="direct-contact-card phone-card" onclick="copyToClipboard('01026672074', 'رقم الهاتف')">
+                    <div class="direct-contact-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <h4>هاتف</h4>
+                    <div class="contact-number">01026672074</div>
+                    <a href="tel:01026672074" class="platform-btn" style="background-color: var(--accent-blue); color: white;" onclick="trackClick('phone')">
+                        <i class="fas fa-phone"></i> اتصال الآن
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- قسم الموقع الجغرافي -->
+        <div class="location-section fade-in">
+            <h3 style="color: white; margin-bottom: 1rem; font-size: 2.5rem;">موقعي الجغرافي</h3>
+            <p style="color: var(--text-gray); margin-bottom: 2rem; font-size: 1.2rem;">يمكنك زيارة موقعي في محافظة الشرقية - مركز منيا القمح - قرية الصنافين</p>
+            
+            <div class="location-card" onclick="copyToClipboard('https://maps.app.goo.gl/X73rHbcZCyTTUEFJ8', 'رابط الموقع الجغرافي')">
+                <div class="location-icon">
+                    <i class="fas fa-map-marked-alt"></i>
+                </div>
+                <h4 style="color: var(--accent-silver); margin-bottom: 1rem; font-size: 1.5rem;">عنواني</h4>
+                <div class="location-details">
+                    محافظة الشرقية<br>
+                    مركز منيا القمح<br>
+                    قرية الصنافين
+                </div>
+                <p class="location-address">
+                    <i class="fas fa-map-pin"></i> العنوان بالتفصيل: الشرقية - منيا القمح - الصنافين
+                </p>
+                <a href="https://maps.app.goo.gl/X73rHbcZCyTTUEFJ8" target="_blank" class="btn btn-success" style="margin-top: 2rem;" onclick="trackClick('location')">
+                    <i class="fas fa-map-marked-alt"></i> افتح موقعي على خرائط جوجل
+                </a>
+            </div>
+        </div>
+        
+        <!-- البريد الإلكتروني -->
+        <div class="email-section fade-in">
+            <h3 style="color: var(--accent-silver); margin-bottom: 1rem; font-size: 2rem;">بريدي الإلكتروني</h3>
+            <p style="color: var(--text-gray); margin-bottom: 1rem; font-size: 1.1rem;">يمكنك مراسلتي مباشرة على بريدي الإلكتروني</p>
+            <p style="color: var(--accent-blue); font-size: 1.4rem; font-weight: bold; margin-bottom: 1.5rem;">mohamed0155for@gmail.com</p>
+            
+            <a href="mailto:mohamed0155for@gmail.com?subject=رسالة من موقعك الشخصي&body=مرحبًا محمد، أود التواصل معك بخصوص..." class="email-btn" onclick="trackClick('email')">
+                <i class="fas fa-envelope"></i> إرسال بريد إلكتروني
+            </a>
+            
+            <button id="copyEmailBtn" class="btn btn-secondary" style="margin-top: 1rem;" onclick="copyToClipboard('mohamed0155for@gmail.com', 'البريد الإلكتروني')">
+                <i class="fas fa-copy"></i> نسخ البريد الإلكتروني
+            </button>
+        </div>
+        
+        <!-- نموذج التواصل -->
+        <div class="contact-form-container fade-in">
+            <h3 style="text-align: center; color: var(--accent-silver); margin-bottom: 2rem; font-size: 1.8rem;">أرسل لي رسالة مباشرة</h3>
+            <form id="contactForm">
+                <div class="form-group">
+                    <label for="name">الاسم الكامل</label>
+                    <input type="text" id="name" class="form-control" placeholder="أدخل اسمك الكامل" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">البريد الإلكتروني</label>
+                    <input type="email" id="email" class="form-control" placeholder="أدخل بريدك الإلكتروني" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="subject">الموضوع</label>
+                    <input type="text" id="subject" class="form-control" placeholder="موضوع الرسالة" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="message">الرسالة</label>
+                    <textarea id="message" class="form-control" placeholder="اكتب رسالتك هنا..." required></textarea>
+                </div>
+                
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-paper-plane"></i> إرسال الرسالة
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- التذييل -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-about">
+                <div class="footer-logo">محمد</div>
+                <p class="footer-about">مطور ويب محترف متخصص في إنشاء تطبيقات ويب حديثة باستخدام أحدث التقنيات. أسعى دائمًا لتقديم حلول برمجية مبتكرة تلبي احتياجات العملاء.</p>
+                
+                <div class="social-footer">
+                    <a href="https://www.facebook.com/share/183kKLm5LF/" target="_blank" onclick="trackClick('facebook-footer')"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.tiktok.com/@giga559?_r=1&_t=ZS-92ngJYySmGL" target="_blank" onclick="trackClick('tiktok-footer')"><i class="fab fa-tiktok"></i></a>
+                    <a href="https://www.instagram.com/audi.it.m?igsh=MWZnajN1MTk4emJwNQ==" target="_blank" onclick="trackClick('instagram-footer')"><i class="fab fa-instagram"></i></a>
+                    <a href="https://t.me/fffzfs" target="_blank" onclick="trackClick('telegram-footer')"><i class="fab fa-telegram-plane"></i></a>
+                    <a href="mailto:mohamed0155for@gmail.com" onclick="trackClick('email-footer')"><i class="fas fa-envelope"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-links-container">
+                <h4>روابط سريعة</h4>
+                <div class="footer-links">
+                    <a href="#home"><i class="fas fa-chevron-left"></i> الرئيسية</a>
+                    <a href="#about"><i class="fas fa-chevron-left"></i> نبذة عني</a>
+                    <a href="#projects"><i class="fas fa-chevron-left"></i> مشاريعي</a>
+                    <a href="#connect"><i class="fas fa-chevron-left"></i> تواصل معي</a>
+                </div>
+            </div>
+            
+            <div class="footer-links-container">
+                <h4>وسائل التواصل</h4>
+                <div class="footer-links">
+                    <a href="tel:01026672074" onclick="trackClick('phone-footer')"><i class="fas fa-phone"></i> 01026672074</a>
+                    <a href="https://wa.me/201020118437" target="_blank" onclick="trackClick('whatsapp-footer')"><i class="fab fa-whatsapp"></i> 01020118437</a>
+                    <a href="mailto:mohamed0155for@gmail.com" onclick="trackClick('email-footer2')"><i class="fas fa-envelope"></i> mohamed0155for@gmail.com</a>
+                    <a href="https://t.me/fffzfs" target="_blank" onclick="trackClick('telegram-footer2')"><i class="fab fa-telegram-plane"></i> @fffzfs</a>
+                    <a href="https://maps.app.goo.gl/X73rHbcZCyTTUEFJ8" target="_blank" onclick="trackClick('location-footer')"><i class="fas fa-map-marker-alt"></i> الشرقية - منيا القمح</a>
+                </div>
+            </div>
+        </div>
+        
+        <p class="copyright">© 2023 محمد | موقعي الشخصي. جميع الحقوق محفوظة.</p>
+    </footer>
+
+    <!-- منطقة الإشعارات -->
+    <div id="notificationArea"></div>
+
+    <script>
+        // تأثيرات التمرير
+        document.addEventListener('DOMContentLoaded', function() {
+            // تحميل الصورة الشخصية
+            document.getElementById('profileImage').onerror = function() {
+                this.src = 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
+            };
+            
+            // تأثير الظهور عند التمرير
+            const fadeElements = document.querySelectorAll('.fade-in');
+            
+            const fadeInOnScroll = function() {
+                fadeElements.forEach(element => {
+                    const elementTop = element.getBoundingClientRect().top;
+                    const elementVisible = 150;
+                    
+                    if (elementTop < window.innerHeight - elementVisible) {
+                        element.classList.add('visible');
+                    }
+                });
+            };
+            
+            fadeInOnScroll();
+            window.addEventListener('scroll', fadeInOnScroll);
+            
+            // النقر على روابط القائمة للنقل السلس
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if(targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if(targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                        
+                        // إغلاق القائمة المتنقلة إذا كانت مفتوحة
+                        document.querySelector('.nav-links').classList.remove('active');
+                        document.querySelector('.mobile-menu-btn').innerHTML = '<i class="fas fa-bars"></i>';
+                    }
+                });
+            });
+            
+            // شريط التقدم
+            const scrollProgress = document.querySelector('.scroll-progress');
+            const backToTop = document.querySelector('.back-to-top');
+            
+            window.addEventListener('scroll', function() {
+                const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+                const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrollPercent = (scrollTop / scrollHeight) * 100;
+                
+                scrollProgress.style.width = scrollPercent + '%';
+                
+                // إظهار زر العودة للأعلى
+                if (scrollTop > 500) {
+                    backToTop.classList.add('active');
+                } else {
+                    backToTop.classList.remove('active');
+                }
+                
+                // تأثير الشريط العلوي عند التمرير
+                const header = document.getElementById('header');
+                if (scrollTop > 100) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+            
+            // زر العودة للأعلى
+            backToTop.addEventListener('click', function(e) {
+                e.preventDefault();
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // القائمة المتنقلة
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const navLinks = document.querySelector('.nav-links');
+            
+            mobileMenuBtn.addEventListener('click', function() {
+                navLinks.classList.toggle('active');
+                this.innerHTML = navLinks.classList.contains('active') 
+                    ? '<i class="fas fa-times"></i>' 
+                    : '<i class="fas fa-bars"></i>';
+            });
+            
+            // إغلاق القائمة عند النقر على رابط
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.addEventListener('click', function() {
+                    navLinks.classList.remove('active');
+                    mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                });
+            });
+            
+            // نموذج التواصل
+            const contactForm = document.getElementById('contactForm');
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // جمع بيانات النموذج
+                const name = document.getElementById('name').value;
+                const email = document.getElementById('email').value;
+                const subject = document.getElementById('subject').value;
+                const message = document.getElementById('message').value;
+                
+                // في الواقع هنا يجب إرسال البيانات إلى الخادم
+                // لكننا سنكتفي بعرض رسالة نجاح للمستخدم
+                showNotification(`شكراً ${name}! تم استلام رسالتك بنجاح. سأرد عليك في أقرب وقت ممكن.`, 'success');
+                
+                // إعادة تعيين النموذج
+                contactForm.reset();
+            });
+            
+            // تأثيرات تفاعلية للبطاقات
+            const cards = document.querySelectorAll('.social-platform-card, .project-card, .direct-contact-card, .stat-item, .location-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-15px) scale(1.03)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+            
+            // تأثير الكتابة النصية
+            const typingText = document.querySelector('.typing-text');
+            const texts = ['مطور ويب محترف', 'مبرمج Python', 'خبير Node.js', 'مصمم واجهات مستخدم', 'مستشار تقني'];
+            let textIndex = 0;
+            let charIndex = 0;
+            let isDeleting = false;
+            
+            function typeEffect() {
+                const currentText = texts[textIndex];
+                
+                if (isDeleting) {
+                    typingText.textContent = currentText.substring(0, charIndex - 1);
+                    charIndex--;
+                } else {
+                    typingText.textContent = currentText.substring(0, charIndex + 1);
+                    charIndex++;
+                }
+                
+                if (!isDeleting && charIndex === currentText.length) {
+                    isDeleting = true;
+                    setTimeout(typeEffect, 2000);
+                } else if (isDeleting && charIndex === 0) {
+                    isDeleting = false;
+                    textIndex = (textIndex + 1) % texts.length;
+                    setTimeout(typeEffect, 500);
+                } else {
+                    const typeSpeed = isDeleting ? 50 : 100;
+                    setTimeout(typeEffect, typeSpeed);
+                }
+            }
+            
+            // بدء تأثير الكتابة بعد تأخير بسيط
+            setTimeout(typeEffect, 1000);
+            
+            // زر تحميل السيرة الذاتية
+            document.getElementById('downloadCV').addEventListener('click', function() {
+                showNotification('جاري تحميل السيرة الذاتية...', 'info');
+                
+                // في الواقع هنا يجب رفع ملف PDF للسيرة الذاتية
+                // لكننا سنستخدم رابطًا افتراضيًا للتوضيح
+                setTimeout(function() {
+                    const link = document.createElement('a');
+                    link.href = 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
+                    link.download = 'سيرة_محمد_الذاتية.pdf';
+                    link.target = '_blank';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    
+                    showNotification('تم بدء تحميل السيرة الذاتية!', 'success');
+                }, 1000);
+            });
+            
+            // تأثير الصورة الشخصية
+            document.getElementById('profileImageContainer').addEventListener('click', function() {
+                this.classList.add('animate__animated', 'animate__pulse');
+                setTimeout(() => {
+                    this.classList.remove('animate__animated', 'animate__pulse');
+                }, 1000);
+                showNotification('هذه صورتي الشخصية!', 'info');
+            });
+        });
+        
+        // وظيفة عرض الإشعارات
+        function showNotification(message, type = 'info') {
+            const notificationArea = document.getElementById('notificationArea');
+            
+            // إنشاء عنصر الإشعار
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            
+            // تحديد اللون بناءً على النوع
+            let icon = 'info-circle';
+            let bgColor = 'linear-gradient(135deg, #00B4D8, #0077B6)';
+            
+            if (type === 'success') {
+                icon = 'check-circle';
+                bgColor = 'linear-gradient(135deg, #2ECC71, #27AE60)';
+            } else if (type === 'warning') {
+                icon = 'exclamation-triangle';
+                bgColor = 'linear-gradient(135deg, #F39C12, #E67E22)';
+            } else if (type === 'error') {
+                icon = 'times-circle';
+                bgColor = 'linear-gradient(135deg, #E74C3C, #C0392B)';
+            }
+            
+            notification.style.background = bgColor;
+            notification.innerHTML = `
+                <i class="fas fa-${icon} notification-icon"></i>
+                <span>${message}</span>
+            `;
+            
+            // إضافة الإشعار إلى المنطقة
+            notificationArea.appendChild(notification);
+            
+            // عرض الإشعار
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 10);
+            
+            // إخفاء الإشعار بعد 5 ثواني
+            setTimeout(() => {
+                notification.classList.remove('show');
+                notification.classList.add('hide');
+                
+                // إزالة الإشعار بعد انتهاء الرسوم المتحركة
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 500);
+            }, 5000);
+            
+            // إمكانية إغلاق الإشعار بالنقر عليه
+            notification.addEventListener('click', function() {
+                this.classList.remove('show');
+                this.classList.add('hide');
+                
+                setTimeout(() => {
+                    if (this.parentNode) {
+                        this.parentNode.removeChild(this);
+                    }
+                }, 500);
+            });
+        }
+        
+        // وظيفة نسخ النص إلى الحافظة
+        function copyToClipboard(text, label = 'النص') {
+            navigator.clipboard.writeText(text).then(() => {
+                showNotification(`تم نسخ ${label} إلى الحافظة: ${text}`, 'success');
+            }).catch(err => {
+                // طريقة بديلة للمتصفحات القديمة
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showNotification(`تم نسخ ${label} إلى الحافظة: ${text}`, 'success');
+            });
+        }
+        
+        // وظيفة تتبع النقرات
+        function trackClick(platform) {
+            console.log(`تم النقر على ${platform}`);
+            // هنا يمكنك إضافة كود لتتبع النقرات في نظام التحليلات
+            showNotification(`جاري التحويل إلى ${platform}...`, 'info');
+        }
+        
+        // وظيفة فتح مشروع تجريبي
+        function openProjectDemo(projectId) {
+            showNotification('جاري فتح صفحة المشروع...', 'info');
+            
+            // في الواقع هنا يجب فتح رابط المشروع الحقيقي
+            // لكننا سنفتح نافذة جديدة بموقع تجريبي
+            setTimeout(() => {
+                window.open('https://codepen.io/', '_blank');
+            }, 500);
+        }
+        
+        // تفعيل جميع الأزرار التفاعلية
+        function initializeInteractiveButtons() {
+            // أزرار التواصل الاجتماعي في الفوتر
+            document.querySelectorAll('.social-footer a').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const platform = this.querySelector('i').className.split(' ')[1].replace('fa-', '');
+                    trackClick(platform);
+                    
+                    // فتح الرابط بعد تأخير بسيط
+                    setTimeout(() => {
+                        if (this.href) {
+                            window.open(this.href, '_blank');
+                        }
+                    }, 300);
+                });
+            });
+            
+            // أزرار الروابط في الفوتر
+            document.querySelectorAll('.footer-links a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    if (this.getAttribute('href') && this.getAttribute('href').startsWith('#')) {
+                        e.preventDefault();
+                        const targetId = this.getAttribute('href');
+                        const targetElement = document.querySelector(targetId);
+                        
+                        if (targetElement) {
+                            window.scrollTo({
+                                top: targetElement.offsetTop - 80,
+                                behavior: 'smooth'
+                            });
+                        }
+                    }
+                });
+            });
+            
+            // جعل جميع الأزرار تفاعلية
+            document.querySelectorAll('.btn, .platform-btn, .project-btn, .email-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    this.classList.add('animate__animated', 'animate__pulse');
+                    setTimeout(() => {
+                        this.classList.remove('animate__animated', 'animate__pulse');
+                    }, 1000);
+                });
+            });
+        }
+        
+        // تهيئة الأزرار التفاعلية بعد تحميل الصفحة
+        window.addEventListener('load', initializeInteractiveButtons);
+    </script>
+</body>
+</html>
