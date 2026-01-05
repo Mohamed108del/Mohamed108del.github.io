@@ -1297,6 +1297,279 @@
         }
     </style>
 </head>
+<!-- خلفية أكواد برمجة بتأثيرات CSS3 -->
+<div id="cssCodeBackground"></div>
+
+<style>
+    #cssCodeBackground {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        pointer-events: none;
+        overflow: hidden;
+        background: linear-gradient(180deg, 
+            rgba(10, 10, 15, 0.9) 0%,
+            rgba(13, 27, 42, 0.7) 50%,
+            rgba(10, 10, 15, 0.9) 100%);
+    }
+    
+    .code-line {
+        position: absolute;
+        font-family: 'Courier New', monospace;
+        font-size: 14px;
+        color: #00B4D8;
+        text-shadow: 0 0 10px #00B4D8;
+        white-space: nowrap;
+        animation: fallDown linear infinite;
+        opacity: 0.7;
+    }
+    
+    .code-line:nth-child(2n) {
+        color: #2ECC71;
+        text-shadow: 0 0 10px #2ECC71;
+    }
+    
+    .code-line:nth-child(3n) {
+        color: #E0E1DD;
+        text-shadow: 0 0 10px #E0E1DD;
+    }
+    
+    .code-line:nth-child(4n) {
+        color: #0096C7;
+        text-shadow: 0 0 10px #0096C7;
+    }
+    
+    @keyframes fallDown {
+        0% {
+            transform: translateY(-100px);
+            opacity: 0;
+        }
+        10% {
+            opacity: 1;
+        }
+        90% {
+            opacity: 1;
+        }
+        100% {
+            transform: translateY(100vh);
+            opacity: 0;
+        }
+    }
+    
+    .special-code {
+        position: absolute;
+        font-family: 'Courier New', monospace;
+        font-size: 18px;
+        font-weight: bold;
+        background: linear-gradient(90deg, #00B4D8, #2ECC71);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        text-shadow: 0 0 15px rgba(0, 180, 216, 0.5);
+        animation: floatCode 20s linear infinite;
+        z-index: 1;
+    }
+    
+    @keyframes floatCode {
+        0% {
+            transform: translateX(-100px) translateY(100vh) rotate(0deg);
+            opacity: 0;
+        }
+        10% {
+            opacity: 1;
+        }
+        90% {
+            opacity: 1;
+        }
+        100% {
+            transform: translateX(calc(100vw + 100px)) translateY(-100px) rotate(360deg);
+            opacity: 0;
+        }
+    }
+</style>
+
+<script>
+    (function() {
+        const background = document.getElementById('cssCodeBackground');
+        const codeSnippets = [
+            "function calculate() { return x + y; }",
+            "const user = { name: 'John', age: 30 };",
+            "if (response.status === 200) { return data; }",
+            "for (let i = 0; i < array.length; i++) { }",
+            "import React from 'react';",
+            "export default function App() { }",
+            "console.log('Hello World!');",
+            "document.getElementById('demo');",
+            "axios.get('/api/data').then(response => { });",
+            "localStorage.setItem('key', 'value');",
+            "try { /* code */ } catch (error) { }",
+            "class User { constructor(name) { this.name = name; } }",
+            "async function fetchData() { await api.call(); }",
+            "const map = new Map(); map.set('key', 'value');",
+            "const regex = /pattern/g;",
+            "npm install package-name",
+            "git push origin main",
+            "docker build -t myapp .",
+            "SELECT * FROM users WHERE id = 1",
+            "JSON.parse(string)",
+            "Math.random() * 100",
+            "Date.now()",
+            "window.addEventListener('click', handler)",
+            "document.querySelector('.class')",
+            "Array.prototype.map()",
+            "Promise.resolve(value)",
+            "fetch(url).then(r => r.json())",
+            "setTimeout(() => {}, 1000)",
+            "setInterval(() => {}, 1000)",
+            "new Audio('sound.mp3')",
+            "canvas.getContext('2d')",
+            "localStorage.clear()",
+            "window.location.href = url",
+            "event.preventDefault()",
+            "element.classList.add('active')",
+            "window.scrollTo(0, 0)",
+            "navigator.clipboard.writeText(text)",
+            "new IntersectionObserver(callback)",
+            "Intl.DateTimeFormat().format(date)"
+        ];
+        
+        const arabicSnippets = [
+            "دالة احسب() { أرجع س + ص; }",
+            "ثابت مستخدم = { اسم: 'أحمد', عمر: ٢٥ };",
+            "إذا (الحالة === ٢٠٠) { أرجع البيانات; }",
+            "لـ (لـي أنا = ٠; أنا < المصفوفة.طول; أنا++) { }",
+            "استيراد رياكت من 'رياكت';",
+            "أصدر دالة التطبيق() { }",
+            "كونسول.سجل('مرحبا بالعالم!');",
+            "وثيقة.احصل_على_عنصر_من_المعرف('تجربة');"
+        ];
+        
+        // إنشاء خطوط الأكواد
+        function createCodeLines() {
+            const numberOfLines = Math.floor(window.innerWidth / 30);
+            
+            for (let i = 0; i < numberOfLines; i++) {
+                const line = document.createElement('div');
+                line.className = 'code-line';
+                
+                // اختيار عشوائي بين الإنجليزية والعربية
+                const useArabic = Math.random() > 0.7;
+                const snippets = useArabic ? arabicSnippets : codeSnippets;
+                const text = snippets[Math.floor(Math.random() * snippets.length)];
+                
+                line.textContent = text;
+                line.style.left = `${(i / numberOfLines) * 100}%`;
+                line.style.animationDuration = `${Math.random() * 20 + 10}s`;
+                line.style.animationDelay = `${Math.random() * 5}s`;
+                line.style.fontSize = `${Math.random() * 4 + 12}px`;
+                line.style.opacity = `${Math.random() * 0.5 + 0.3}`;
+                
+                background.appendChild(line);
+            }
+        }
+        
+        // إنشاء أكواد خاصة تطفو
+        function createSpecialCodes() {
+            const specialCodes = [
+                "React.Component",
+                "async/await",
+                "WebSocket",
+                "GraphQL",
+                "Node.js",
+                "TypeScript",
+                "Python",
+                "Django",
+                "MongoDB",
+                "Docker",
+                "Kubernetes",
+                "TensorFlow",
+                "WebGL",
+                "PWA",
+                "REST API",
+                "OAuth 2.0",
+                "JWT Token",
+                "WebAssembly",
+                "Blockchain",
+                "Machine Learning"
+            ];
+            
+            for (let i = 0; i < 5; i++) {
+                const code = document.createElement('div');
+                code.className = 'special-code';
+                code.textContent = specialCodes[Math.floor(Math.random() * specialCodes.length)];
+                code.style.top = `${Math.random() * 100}%`;
+                code.style.left = `${Math.random() * 100}%`;
+                code.style.animationDuration = `${Math.random() * 30 + 20}s`;
+                code.style.animationDelay = `${Math.random() * 10}s`;
+                
+                background.appendChild(code);
+            }
+        }
+        
+        // إنشاء تأثيرات خاصة
+        function createSpecialEffects() {
+            // تأثير مفتاح Enter (محاكاة كتابة)
+            setInterval(() => {
+                if (Math.random() > 0.8) {
+                    const enterEffect = document.createElement('div');
+                    enterEffect.textContent = "[ENTER]";
+                    enterEffect.style.position = 'absolute';
+                    enterEffect.style.fontFamily = 'monospace';
+                    enterEffect.style.color = '#2ECC71';
+                    enterEffect.style.fontSize = '16px';
+                    enterEffect.style.textShadow = '0 0 10px #2ECC71';
+                    enterEffect.style.top = `${Math.random() * 100}%`;
+                    enterEffect.style.left = `${Math.random() * 100}%`;
+                    enterEffect.style.opacity = '0';
+                    enterEffect.style.animation = 'fadeInOut 2s ease-in-out';
+                    
+                    background.appendChild(enterEffect);
+                    
+                    // إزالة بعد الانتهاء
+                    setTimeout(() => {
+                        if (enterEffect.parentNode) {
+                            enterEffect.parentNode.removeChild(enterEffect);
+                        }
+                    }, 2000);
+                }
+            }, 1000);
+            
+            // تعريف animation fadeInOut
+            if (!document.querySelector('#code-animations')) {
+                const style = document.createElement('style');
+                style.id = 'code-animations';
+                style.textContent = `
+                    @keyframes fadeInOut {
+                        0% { opacity: 0; transform: scale(0.5); }
+                        50% { opacity: 1; transform: scale(1.2); }
+                        100% { opacity: 0; transform: scale(0.5); }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+        }
+        
+        // إعادة التهيئة عند تغيير حجم النافذة
+        window.addEventListener('resize', function() {
+            // إزالة جميع الخطوط
+            const lines = background.querySelectorAll('.code-line, .special-code');
+            lines.forEach(line => line.remove());
+            
+            // إعادة الإنشاء
+            createCodeLines();
+            createSpecialCodes();
+        });
+        
+        // بدء الإنشاء
+        createCodeLines();
+        createSpecialCodes();
+        createSpecialEffects();
+        
+    })();
+</script>
 <body>
     <!-- شريط التقدم -->
     <div class="scroll-progress"></div>
