@@ -1,74 +1,337 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./style.css">
+    <title>نور | الموسوعة القرآنية العملاقة</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&family=Amiri:wght@400;700&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
 </head>
-
 <body>
-
-    <header id="titlebar" onmousedown='return false;' onselectstart='return false;' onContextMenu="return false;">
-
-        <div id="drag-region">
-            <div id="window-controls">
-
-                <div class="button" id="min-button">
-                    <img class="icon" srcset="./icon/minimize.png" draggable="false" />
+    <!-- شريط التنقل العملاق -->
+    <nav class="super-nav">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-mosque"></i>
+                <span>نور</span>
+                <span class="logo-badge">النسخة الذهبية</span>
+            </div>
+            
+            <div class="nav-links" id="navLinks">
+                <a href="index.html" class="active"><i class="fas fa-home"></i> الرئيسية</a>
+                <a href="quran.html"><i class="fas fa-quran"></i> المصحف الشامل</a>
+                <a href="#tafsir"><i class="fas fa-book-open"></i> التفاسير</a>
+                <a href="#audio"><i class="fas fa-headphones"></i> المكتبة الصوتية</a>
+                <a href="#azkar"><i class="fas fa-pray"></i> الأذكار</a>
+                <a href="#qibla"><i class="fas fa-compass"></i> القبلة</a>
+                <a href="#radio"><i class="fas fa-broadcast-tower"></i> البث المباشر</a>
+            </div>
+            
+            <div class="nav-controls">
+                <button class="theme-toggle" onclick="toggleTheme()"><i class="fas fa-moon"></i></button>
+                <button class="search-toggle" onclick="toggleSearch()"><i class="fas fa-search"></i></button>
+                <div class="mobile-menu" onclick="toggleMenu()">
+                    <i class="fas fa-bars"></i>
                 </div>
-
-                <div class="button" id="close-button">
-                    <img class="icon" srcset="./icon/close.png" draggable="false" />
-                </div>
-
             </div>
         </div>
-
-    </header>
-
-    <div class="token" id="token">
-        <img src="./icon/pin-code.png" id="icon_token" onmousedown='return false;' onselectstart='return false;'
-            onContextMenu="return false;">
-        <p id="titel_token">قم بوضع التوكن هنا</p>
-        <input type="text" id="input_token" placeholder="Please put your token here">
-        <button id="but_token">تشغيل</button>
-        <p id="error">تأكد من كتابة التوكن بشكل صحيح !</p>
-    </div>
-
-
-    <div class="bot_start" id="bot_start">
-        <ul class="bot_start_ul" onmousedown='return false;' onselectstart='return false;'
-            onContextMenu="return false;">
-            <li>
-                <img src="./icon/member-card.png" class="bot_icon">
-                <p class="bot_title">المشتركين</p>
-                <p class="number_json" id="number_private"></p>
-            </li>
-            <li>
-                <img src="./icon/group.png" class="bot_icon">
-                <p class="bot_title">القروبات</p>
-                <p class="number_json" id="number_supergroup"></p>
-            </li>
-            <li>
-                <img src="./icon/tv-screen.png" class="bot_icon">
-                <p class="bot_title">القنوات</p>
-                <p class="number_json" id="number_channel"></p>
-            </li>
-        </ul>
-
-        <p id="Status">الحالة: <span id="span_Status"></span></p>
-
-        <div class="bot_but">
-            <button id="off">إيقاف</button>
-            <button id="on">تشغيل</button>
-            <button id="delete">حذف التوكن</button>
+        
+        <!-- شريط البحث المتقدم -->
+        <div class="super-search" id="superSearch">
+            <input type="text" placeholder="ابحث في القرآن الكريم، التفاسير، الأحاديث..." id="globalSearch">
+            <button><i class="fas fa-search"></i> بحث</button>
+            <div class="search-filters">
+                <label><input type="checkbox" checked> القرآن</label>
+                <label><input type="checkbox" checked> التفسير</label>
+                <label><input type="checkbox" checked> الحديث</label>
+                <label><input type="checkbox"> الأذكار</label>
+            </div>
         </div>
+    </nav>
 
-        <p id="Developed">Developed by: Ryan Almalki</p>
+    <!-- شريط التقدم الروحي -->
+    <div class="spiritual-progress">
+        <div class="progress-container">
+            <div class="progress-stats">
+                <span><i class="fas fa-book-reader"></i> ورد اليوم: <strong>5/20</strong> صفحة</span>
+                <span><i class="fas fa-fire"></i> استمرار: <strong>12</strong> يوم</span>
+                <span><i class="fas fa-star"></i> الأهداف: <strong>3/7</strong></span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 25%;"></div>
+            </div>
+        </div>
     </div>
 
-</body>
+    <!-- الهيرو الرئيسي -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1>المصحف الشامل</h1>
+            <p class="hero-ayat">﴿ إِنَّ هَٰذَا الْقُرْآنَ يَهْدِي لِلَّتِي هِيَ أَقْوَمُ ﴾</p>
+            <p class="hero-surah">الإسراء - الآية 9</p>
+            <div class="hero-buttons">
+                <a href="quran.html" class="hero-btn primary"><i class="fas fa-book-open"></i> اقرأ القرآن الآن</a>
+                <a href="#audio" class="hero-btn secondary"><i class="fas fa-headphones"></i> استمع للقراء</a>
+            </div>
+        </div>
+    </section>
 
+    <!-- بطاقات المواقيت والعبادات -->
+    <section class="prayer-dashboard">
+        <div class="container">
+            <div class="prayer-main-card">
+                <div class="prayer-header">
+                    <div class="location-info">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <select id="citySelect" class="city-select">
+                            <option value="cairo">القاهرة - مصر</option>
+                            <option value="makkah">مكة المكرمة</option>
+                            <option value="madinah">المدينة المنورة</option>
+                            <option value="riyadh">الرياض</option>
+                            <option value="dubai">دبي</option>
+                            <option value="amman">عمان</option>
+                            <option value="casablanca">الدار البيضاء</option>
+                        </select>
+                    </div>
+                    <div class="hijri-date" id="hijriDate">
+                        <i class="fas fa-calendar-alt"></i> 13 رمضان 1447
+                    </div>
+                </div>
+
+                <div class="time-display">
+                    <div class="current-time" id="currentTime">12:07</div>
+                    <div class="current-date" id="currentDate"></div>
+                </div>
+
+                <div class="prayer-times-grid">
+                    <div class="prayer-time-card">
+                        <div class="prayer-icon"><i class="fas fa-moon"></i></div>
+                        <div class="prayer-name">الفجر</div>
+                        <div class="prayer-time-value">04:57</div>
+                        <div class="prayer-remaining">3 ساعات</div>
+                    </div>
+                    <div class="prayer-time-card">
+                        <div class="prayer-icon"><i class="fas fa-sun"></i></div>
+                        <div class="prayer-name">الشروق</div>
+                        <div class="prayer-time-value">06:19</div>
+                    </div>
+                    <div class="prayer-time-card highlight">
+                        <div class="prayer-icon"><i class="fas fa-sun"></i></div>
+                        <div class="prayer-name">الظهر</div>
+                        <div class="prayer-time-value">12:07</div>
+                        <div class="prayer-current">الآن</div>
+                    </div>
+                    <div class="prayer-time-card">
+                        <div class="prayer-icon"><i class="fas fa-cloud-sun"></i></div>
+                        <div class="prayer-name">العصر</div>
+                        <div class="prayer-time-value">15:30</div>
+                    </div>
+                    <div class="prayer-time-card">
+                        <div class="prayer-icon"><i class="fas fa-cloud-moon"></i></div>
+                        <div class="prayer-name">المغرب</div>
+                        <div class="prayer-time-value">18:45</div>
+                    </div>
+                    <div class="prayer-time-card">
+                        <div class="prayer-icon"><i class="fas fa-moon"></i></div>
+                        <div class="prayer-name">العشاء</div>
+                        <div class="prayer-time-value">20:10</div>
+                    </div>
+                </div>
+
+                <div class="next-prayer">
+                    <i class="fas fa-bell"></i>
+                    <span>الصلاة القادمة: العصر بعد 3 ساعات و 15 دقيقة</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- أقسام الموسوعة -->
+    <section class="encyclopedia-sections">
+        <div class="container">
+            <h2 class="section-title">الموسوعة الإسلامية المتكاملة</h2>
+            
+            <div class="sections-grid">
+                <div class="section-card large">
+                    <div class="section-icon"><i class="fas fa-quran"></i></div>
+                    <h3>المصحف الشامل</h3>
+                    <p>اقرأ القرآن بخط عثمان طه مع التفسير والترجمة والتجويد الملون</p>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check"></i> 4 خطوط مختلفة (عثمان طه، مجمع الملك فهد)</li>
+                        <li><i class="fas fa-check"></i> 15 تفسيرًا (الطبري، ابن كثير، السعدي، القرطبي)</li>
+                        <li><i class="fas fa-check"></i> 20 ترجمة بلغات العالم</li>
+                        <li><i class="fas fa-check"></i> التجويد الملون بالأحكام</li>
+                    </ul>
+                    <a href="quran.html" class="section-link">ادخل المصحف <i class="fas fa-arrow-left"></i></a>
+                </div>
+
+                <div class="section-card">
+                    <div class="section-icon"><i class="fas fa-headphones"></i></div>
+                    <h3>المكتبة الصوتية</h3>
+                    <p>استمع لأشهر قراء العالم الإسلامي</p>
+                    <div class="reciters-preview">
+                        <span>عبد الباسط</span>
+                        <span>الحصري</span>
+                        <span>المنشاوي</span>
+                        <span>مشاري العفاسي</span>
+                    </div>
+                    <a href="#audio" class="section-link">استمع الآن <i class="fas fa-arrow-left"></i></a>
+                </div>
+
+                <div class="section-card">
+                    <div class="section-icon"><i class="fas fa-book"></i></div>
+                    <h3>مكتبة التفاسير</h3>
+                    <p>أشهر تفسير القرآن عبر العصور</p>
+                    <ul class="feature-list small">
+                        <li>تفسير الطبري - جامع البيان</li>
+                        <li>تفسير ابن كثير</li>
+                        <li>تفسير السعدي - تيسير الكريم الرحمن</li>
+                        <li>تفسير القرطبي - الجامع لأحكام القرآن</li>
+                    </ul>
+                </div>
+
+                <div class="section-card">
+                    <div class="section-icon"><i class="fas fa-hadith"></i></div>
+                    <h3>مكتبة الحديث</h3>
+                    <p>أشهر كتب الحديث النبوي</p>
+                    <ul class="feature-list small">
+                        <li>صحيح البخاري</li>
+                        <li>صحيح مسلم</li>
+                        <li>سنن أبي داود</li>
+                        <li>جامع الترمذي</li>
+                    </ul>
+                </div>
+
+                <div class="section-card">
+                    <div class="section-icon"><i class="fas fa-praying-hands"></i></div>
+                    <h3>الأذكار والأدعية</h3>
+                    <p>أذكار الصباح والمساء والأدعية المأثورة</p>
+                </div>
+
+                <div class="section-card">
+                    <div class="section-icon"><i class="fas fa-compass"></i></div>
+                    <h3>بوصلة القبلة</h3>
+                    <p>اتجاه القبلة من موقعك بدقة عالية</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- آية اليوم وحديث اليوم -->
+    <section class="daily-content">
+        <div class="container">
+            <div class="daily-grid">
+                <div class="daily-card ayat-card">
+                    <div class="daily-header">
+                        <i class="fas fa-quran"></i>
+                        <h3>آية اليوم</h3>
+                    </div>
+                    <div class="ayat-content">
+                        <p class="ayat-arabic">﴿ يَا أَيُّهَا الَّذِينَ آمَنُوا إِذَا قِيلَ لَكُمْ تَفَسَّحُوا فِي الْمَجَالِسِ فَافْسَحُوا يَفْسَحِ اللَّهُ لَكُمْ ۖ وَإِذَا قِيلَ انشُزُوا فَانشُزُوا يَرْفَعِ اللَّهُ الَّذِينَ آمَنُوا مِنكُمْ وَالَّذِينَ أُوتُوا الْعِلْمَ دَرَجَاتٍ ۚ وَاللَّهُ بِمَا تَعْمَلُونَ خَبِيرٌ ﴾</p>
+                        <p class="ayat-reference">سورة المجادلة - الآية 11</p>
+                        <button class="tafsir-quick" onclick="showQuickTafsir(58,11)"><i class="fas fa-book-open"></i> عرض التفسير</button>
+                    </div>
+                </div>
+
+                <div class="daily-card hadith-card">
+                    <div class="daily-header">
+                        <i class="fas fa-hadith"></i>
+                        <h3>حديث اليوم</h3>
+                    </div>
+                    <div class="hadith-content">
+                        <p class="hadith-text">"من سلك طريقًا يلتمس فيه علمًا، سهل الله له به طريقًا إلى الجنة"</p>
+                        <p class="hadith-reference">رواه مسلم</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- إحصائيات سريعة -->
+    <section class="quick-stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">114</div>
+                    <div class="stat-label">سورة</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">6,236</div>
+                    <div class="stat-label">آية</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">15</div>
+                    <div class="stat-label">تفسير</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">20+</div>
+                    <div class="stat-label">قارئ</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">30</div>
+                    <div class="stat-label">لغة</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- الفوتر العملاق -->
+    <footer class="super-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4><i class="fas fa-mosque"></i> نور</h4>
+                    <p>أكبر موسوعة قرآنية إسلامية متكاملة على الإنترنت. نسعى لتقريب القرآن والعلوم الإسلامية للعالم.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-telegram"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-col">
+                    <h4>المصحف الشامل</h4>
+                    <ul>
+                        <li><a href="quran.html">قراءة القرآن</a></li>
+                        <li><a href="#">التفاسير</a></li>
+                        <li><a href="#">الترجمات</a></li>
+                        <li><a href="#">التجويد الملون</a></li>
+                        <li><a href="#">القراءات العشر</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>المكتبة الصوتية</h4>
+                    <ul>
+                        <li><a href="#">تلاوات نادرة</a></li>
+                        <li><a href="#">القراء المشاهير</a></li>
+                        <li><a href="#">التراويح</a></li>
+                        <li><a href="#">التفسير الصوتي</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>الخدمات</h4>
+                    <ul>
+                        <li><a href="#">مواقيت الصلاة</a></li>
+                        <li><a href="#">اتجاه القبلة</a></li>
+                        <li><a href="#">التقويم الهجري</a></li>
+                        <li><a href="#">مناسك الحج والعمرة</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>جميع الحقوق محفوظة لنور © 2026 | نساهم في نشر القرآن الكريم</p>
+                <div class="quran-quote">﴿ وَإِنَّهُ لَكِتَابٌ عَزِيزٌ ﴾</div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
 </html>

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نور | المصحف الشامل - أضخم منصة قرآنية</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&family=Amiri:wght@400;700&family=Scheherazade+New:wght@400;700&family=Uthmanic+Hafs&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- شريط التنقل (مشابه للرئيسية) -->
+    <nav class="super-nav">
+        <!-- نفس المحتوى مع تغيير الactive -->
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-mosque"></i>
+                <span>نور</span>
+                <span class="logo-badge">المصحف الشامل</span>
+            </div>
+            
+            <div class="nav-links" id="navLinks">
+                <a href="index.html"><i class="fas fa-home"></i> الرئيسية</a>
+                <a href="quran.html" class="active"><i class="fas fa-quran"></i> المصحف الشامل</a>
+                <a href="#tafsir"><i class="fas fa-book-open"></i> التفاسير</a>
+                <a href="#audio"><i class="fas fa-headphones"></i> المكتبة الصوتية</a>
+                <a href="#azkar"><i class="fas fa-pray"></i> الأذكار</a>
+                <a href="#qibla"><i class="fas fa-compass"></i> القبلة</a>
+            </div>
+            
+            <div class="nav-controls">
+                <button class="theme-toggle" onclick="toggleTheme()"><i class="fas fa-moon"></i></button>
+                <div class="mobile-menu" onclick="toggleMenu()">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- شريط التحكم بالمصحف -->
+    <div class="quran-control-bar">
+        <div class="container">
+            <div class="control-grid">
+                <!-- اختيار السورة -->
+                <div class="control-group">
+                    <label>السورة:</label>
+                    <select id="surahSelect" class="quran-select" onchange="loadSurah(this.value)">
+                        <option value="">اختر السورة</option>
+                    </select>
+                </div>
+
+                <!-- اختيار الآية -->
+                <div class="control-group">
+                    <label>الآية:</label>
+                    <select id="ayahSelect" class="quran-select" onchange="jumpToAyah(this.value)">
+                        <option value="">اختر الآية</option>
+                    </select>
+                </div>
+
+                <!-- اختيار القارئ -->
+                <div class="control-group">
+                    <label>القارئ:</label>
+                    <select id="reciterSelect" class="quran-select">
+                        <option value="abdulbasit">عبد الباسط عبد الصمد</option>
+                        <option value="husary">محمود خليل الحصري</option>
+                        <option value="minshawi">محمد صديق المنشاوي</option>
+                        <option value="afasy">مشاري العفاسي</option>
+                        <option value="sudais">عبد الرحمن السديس</option>
+                    </select>
+                </div>
+
+                <!-- اختيار الخط -->
+                <div class="control-group">
+                    <label>الخط:</label>
+                    <select id="fontSelect" class="quran-select" onchange="changeQuranFont(this.value)">
+                        <option value="uthmani">عثمان طه (مصحف المدينة)</option>
+                        <option value="qpc_v1">مجمع الملك فهد الإصدار الأول</option>
+                        <option value="qpc_v2">مجمع الملك فهد الإصدار الثاني [محدث]</option>
+                        <option value="noorehuda">نور الهدى</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="control-buttons">
+                <button class="control-btn" onclick="toggleTafsir()"><i class="fas fa-book-open"></i> التفسير</button>
+                <button class="control-btn" onclick="toggleTranslation()"><i class="fas fa-language"></i> الترجمة</button>
+                <button class="control-btn" onclick="toggleTajweed()"><i class="fas fa-palette"></i> التجويد الملون</button>
+                <button class="control-btn" onclick="playAyahAudio()"><i class="fas fa-play"></i> استمع</button>
+                <button class="control-btn" onclick="bookmarkAyah()"><i class="fas fa-bookmark"></i> حفظ</button>
+                <button class="control-btn" onclick="shareAyah()"><i class="fas fa-share-alt"></i> مشاركة</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- المصحف الرئيسي -->
+    <div class="quran-mushaf-container">
+        <div class="container">
+            <div class="mushaf-layout">
+                <!-- الشريط الجانبي (قائمة السور السريعة) -->
+                <div class="sidebar-surahs">
+                    <h4>السور</h4>
+                    <div class="surah-list" id="sidebarSurahList">
+                        <!-- يتم التعبئة بواسطة JavaScript -->
+                    </div>
+                </div>
+
+                <!-- عرض المصحف -->
+                <div class="quran-display-area">
+                    <!-- رأس السورة -->
+                    <div class="surah-header" id="surahHeader">
+                        <h2 id="surahName">سورة الفاتحة</h2>
+                        <p id="surahInfo">مكية - 7 آيات</p>
+                    </div>
+
+                    <!-- البسملة -->
+                    <div class="bismillah" id="bismillah">
+                        ﴿ بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ ﴾
+                    </div>
+
+                    <!-- الآيات -->
+                    <div class="verses-container" id="versesContainer">
+                        <!-- سيتم تعبئتها بالآيات -->
+                    </div>
+
+                    <!-- أزرار التنقل بين السور -->
+                    <div class="surah-navigation">
+                        <button class="nav-btn" onclick="previousSurah()"><i class="fas fa-arrow-right"></i> السورة السابقة</button>
+                        <button class="nav-btn" onclick="nextSurah()">السورة التالية <i class="fas fa-arrow-left"></i></button>
+                    </div>
+                </div>
+
+                <!-- الشريط الجانبي (التفسير والترجمة) -->
+                <div class="sidebar-tafsir" id="tafsirSidebar">
+                    <div class="sidebar-tabs">
+                        <button class="tab-btn active" onclick="switchSidebarTab('tafsir')">التفسير</button>
+                        <button class="tab-btn" onclick="switchSidebarTab('translation')">الترجمة</button>
+                        <button class="tab-btn" onclick="switchSidebarTab('info')">معلومات</button>
+                    </div>
+                    
+                    <div class="sidebar-content">
+                        <!-- التفسير -->
+                        <div id="tafsirContent" class="tab-content active">
+                            <select id="tafsirSelect" class="tafsir-select" onchange="changeTafsir(this.value)">
+                                <option value="ibn-kathir">تفسير ابن كثير</option>
+                                <option value="tabari">تفسير الطبري</option>
+                                <option value="saadi">تفسير السعدي</option>
+                                <option value="qurtubi">تفسير القرطبي</option>
+                                <option value="baghawi">تفسير البغوي</option>
+                            </select>
+                            <div id="tafsirText" class="tafsir-text">
+                                <!-- نص التفسير سيظهر هنا -->
+                            </div>
+                        </div>
+
+                        <!-- الترجمة -->
+                        <div id="translationContent" class="tab-content">
+                            <select id="translationSelect" class="tafsir-select" onchange="changeTranslation(this.value)">
+                                <option value="english">English - Sahih International</option>
+                                <option value="french">Français - Hamidullah</option>
+                                <option value="urdu">اردو - علامہ جوادی</option>
+                                <option value="indonesian">Indonesia - Kementerian Agama</option>
+                                <option value="russian">Русский - Кулиев</option>
+                            </select>
+                            <div id="translationText" class="translation-text">
+                                <!-- نص الترجمة سيظهر هنا -->
+                            </div>
+                        </div>
+
+                        <!-- معلومات السورة -->
+                        <div id="infoContent" class="tab-content">
+                            <div class="surah-info-box">
+                                <p><strong>رقم السورة:</strong> <span id="surahNumber">1</span></p>
+                                <p><strong>عدد الآيات:</strong> <span id="surahAyahCount">7</span></p>
+                                <p><strong>النوع:</strong> <span id="surahType">مكية</span></p>
+                                <p><strong>الجزء:</strong> <span id="surahJuz">1</span></p>
+                                <p><strong>الحزب:</strong> <span id="surahHizb">1</span></p>
+                                <p><strong>الربع:</strong> <span id="surahRub">1</span></p>
+                                <p><strong>نزول بعد:</strong> <span id="surahAfter">سورة العلق</span></p>
+                                <p><strong>سبب التسمية:</strong> <span id="surahReason">فاتحة الكتاب</span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- زر الإغلاق للجوال -->
+                    <button class="close-sidebar" onclick="closeTafsirSidebar()"><i class="fas fa-times"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- مشغل الصوت -->
+    <div class="audio-player-bar" id="audioPlayer">
+        <div class="audio-info">
+            <img src="assets/reciter-placeholder.jpg" alt="القارئ" class="reciter-img">
+            <div class="audio-details">
+                <span class="surah-playing" id="playingSurah">سورة الفاتحة</span>
+                <span class="reciter-name" id="playingReciter">عبد الباسط عبد الصمد</span>
+            </div>
+        </div>
+        
+        <div class="audio-controls">
+            <button class="audio-btn" onclick="previousAyah()"><i class="fas fa-step-backward"></i></button>
+            <button class="audio-btn play-pause" onclick="toggleAudioPlayback()"><i class="fas fa-play" id="playPauseIcon"></i></button>
+            <button class="audio-btn" onclick="nextAyah()"><i class="fas fa-step-forward"></i></button>
+            <button class="audio-btn" onclick="repeatAyah()"><i class="fas fa-redo-alt"></i></button>
+        </div>
+        
+        <div class="audio-progress">
+            <span id="currentTime">0:00</span>
+            <div class="progress-bar" onclick="seekAudio(event)">
+                <div class="progress-fill" id="audioProgress" style="width: 0%"></div>
+            </div>
+            <span id="totalTime">2:34</span>
+        </div>
+        
+        <div class="audio-volume">
+            <i class="fas fa-volume-up"></i>
+            <input type="range" min="0" max="100" value="80" onchange="changeVolume(this.value)">
+        </div>
+    </div>
+
+    <!-- وضع التجويد الملون (نافذة منبثقة) -->
+    <div class="tajweed-legend" id="tajweedLegend">
+        <h4>أحكام التجويد الملون</h4>
+        <div class="legend-item"><span class="color-box" style="background: #ff0000;"></span> إدغام</div>
+        <div class="legend-item"><span class="color-box" style="background: #0000ff;"></span> إظهار</div>
+        <div class="legend-item"><span class="color-box" style="background: #008000;"></span> إقلاب</div>
+        <div class="legend-item"><span class="color-box" style="background: #800080;"></span> إخفاء</div>
+        <div class="legend-item"><span class="color-box" style="background: #ffa500;"></span> قلقلة</div>
+        <div class="legend-item"><span class="color-box" style="background: #ff69b4;"></span> مد متصل</div>
+        <div class="legend-item"><span class="color-box" style="background: #00ffff;"></span> مد منفصل</div>
+        <button onclick="closeTajweedLegend()">إغلاق</button>
+    </div>
+
+    <script src="quran-data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

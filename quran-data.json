@@ -1,0 +1,217 @@
+// ========== بيانات القرآن الكريم ==========
+const QURAN_DATA = {
+    surahs: [
+        { id: 1, name: "الفاتحة", englishName: "Al-Fatihah", type: "مكية", ayahs: 7, juz: 1, page: 1 },
+        { id: 2, name: "البقرة", englishName: "Al-Baqarah", type: "مدنية", ayahs: 286, juz: "1-3", page: 2 },
+        { id: 3, name: "آل عمران", englishName: "Aal-Imran", type: "مدنية", ayahs: 200, juz: "3-4", page: 50 },
+        // ... وهكذا حتى 114 سورة
+    ],
+    
+    tafsirs: {
+        "ibn-kathir": {
+            name: "تفسير ابن كثير",
+            getText: function(surah, ayah) {
+                return `هذا تفسير ابن كثير للآية ${ayah} من سورة ${surah}...`;
+            }
+        },
+        "tabari": {
+            name: "تفسير الطبري",
+            getText: function(surah, ayah) {
+                return `هذا تفسير الطبري للآية ${ayah} من سورة ${surah}...`;
+            }
+        },
+        // ... باقي التفاسير
+    },
+    
+    translations: {
+        "english": {
+            name: "Sahih International",
+            getText: function(surah, ayah) {
+                return `This is the English translation of verse ${ayah} of Surah ${surah}...`;
+            }
+        },
+        // ... باقي الترجمات
+    },
+    
+    // بيانات التجويد الملون
+    tajweed: {
+        // أحكام التجويد لكل كلمة
+        rules: [
+            { surah: 1, ayah: 1, word: 3, rule: "idgham", color: "#ff0000" },
+            // ... آلاف القواعد
+        ]
+    },
+    
+    // بيانات القراء
+    reciters: {
+        "abdulbasit": {
+            name: "عبد الباسط عبد الصمد",
+            style: "مرتل",
+            baseUrl: "https://example.com/audio/abdulbasit/"
+        },
+        "husary": {
+            name: "محمود خليل الحصري",
+            style: "مرتل",
+            baseUrl: "https://example.com/audio/husary/"
+        },
+        // ... باقي القراء
+    },
+    
+    // بيانات خطوط المصحف
+    fonts: {
+        "uthmani": {
+            name: "عثمان طه",
+            fontFamily: "Uthmanic Hafs, Amiri",
+            url: "assets/fonts/UthmanicHafs.ttf"
+        },
+        "qpc_v1": {
+            name: "مجمع الملك فهد الإصدار الأول",
+            fontFamily: "QPC V1",
+            hasPageFonts: true,
+            totalPages: 604
+        },
+        // ... باقي الخطوط
+    }
+};
+
+// دالة تحميل السور لقائمة الاختيار
+function populateSurahSelect() {
+    const select = document.getElementById('surahSelect');
+    if (!select) return;
+    
+    QURAN_DATA.surahs.forEach(surah => {
+        const option = document.createElement('option');
+        option.value = surah.id;
+        option.textContent = `${surah.id}. ${surah.name} (${surah.ayahs} آيات)`;
+        select.appendChild(option);
+    });
+}
+
+// دالة تحميل آيات السورة
+async function loadSurah(surahId) {
+    if (!surahId) return;
+    
+    const versesContainer = document.getElementById('versesContainer');
+    versesContainer.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> جاري تحميل السورة...</div>';
+    
+    try {
+        // استخدام API حقيقي - AlQuran Cloud API
+        const response = await fetch(`https://api.alquran.cloud/v1/surah/${surahId}`);
+        const data = await response.json();
+        
+        if (data.code === 200) {
+            const surah = data.data;
+            displaySurah(surah);
+        }
+    } catch (error) {
+        // في حالة فشل API، استخدم البيانات المحلية
+        loadLocalSurah(surahId);
+    }
+}
+
+// عرض السورة في المصحف
+function displaySurah(surah) {
+    const versesContainer = document.getElementById('versesContainer');
+    const surahName = document.getElementById('surahName');
+    const surahInfo = document.getElementById('surahInfo');
+    
+    surahName.textContent = surah.name;
+    surahInfo.textContent = `${surah.revelationType} - ${surah.numberOfAyahs} آيات`;
+    
+    let html = '';
+    surah.ayahs.forEach((ayah, index) => {
+        const ayahNumber = index + 1;
+        const ayahText = ayah.text;
+        
+        // إضافة رقم الآية كدائرة
+        html += `
+            <div class="verse-item" id="verse-${surah.number}-${ayahNumber}">
+                <span class="verse-number-circle">${ayahNumber}</span>
+                <span class="verse-text">${ayahText}</span>
+            </div>
+        `;
+    });
+    
+    versesContainer.innerHTML = html;
+}
+
+// دالة تطبيق التجويد الملون
+function applyTajweedColors() {
+    const verses = document.querySelectorAll('.verse-text');
+    // هذا يتطلب معالجة نصية متقدمة لتلوين الحروف حسب الأحكام
+    // يمكن استخدام مكتبة متخصصة مثل "TajweedJS"
+}
+
+// دالة تغيير الخط
+function changeQuranFont(fontType) {
+    const verses = document.querySelectorAll('.verse-text');
+    const fontFamily = QURAN_DATA.fonts[fontType]?.fontFamily || 'Amiri';
+    
+    verses.forEach(verse => {
+        verse.style.fontFamily = fontFamily;
+    });
+}
+
+// تشغيل الصوت
+let currentAudio = null;
+
+function playAyahAudio(surah, ayah) {
+    if (currentAudio) {
+        currentAudio.pause();
+    }
+    
+    const reciter = document.getElementById('reciterSelect').value;
+    const audioUrl = `https://cdn.islamic.network/quran/audio/${getReciterCode(reciter)}/${surah}${ayah}.mp3`;
+    
+    currentAudio = new Audio(audioUrl);
+    currentAudio.play();
+    
+    // تحديث مشغل الصوت
+    document.getElementById('playingSurah').textContent = `سورة ${getSurahName(surah)} - الآية ${ayah}`;
+    document.getElementById('playPauseIcon').className = 'fas fa-pause';
+}
+
+// التهيئة عند تحميل الصفحة
+document.addEventListener('DOMContentLoaded', function() {
+    populateSurahSelect();
+    loadSurah(1); // تحميل الفاتحة افتراضياً
+    updateDateTime();
+    setInterval(updateDateTime, 1000);
+});
+
+// تحديث الوقت والتاريخ
+function updateDateTime() {
+    const now = new Date();
+    const timeElement = document.getElementById('currentTime');
+    const dateElement = document.getElementById('currentDate');
+    
+    if (timeElement) {
+        timeElement.textContent = now.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
+    }
+    
+    if (dateElement) {
+        dateElement.textContent = now.toLocaleDateString('ar-EG', { 
+            weekday: 'long', 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+        });
+    }
+}
+
+// دوال مساعدة أخرى
+function getReciterCode(reciter) {
+    const codes = {
+        'abdulbasit': 'abdulbasit_murattal',
+        'husary': 'husary_muallim',
+        'minshawi': 'minshawi_murattal',
+        'afasy': 'afasy',
+        'sudais': 'sudais'
+    };
+    return codes[reciter] || 'abdulbasit_murattal';
+}
+
+function getSurahName(id) {
+    const surah = QURAN_DATA.surahs.find(s => s.id == id);
+    return surah ? surah.name : '';
+}
